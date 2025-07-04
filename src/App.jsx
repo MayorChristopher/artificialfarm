@@ -32,6 +32,7 @@ import Progress from '@/pages/dashboard/Progress';
 import Certificates from '@/pages/dashboard/Certificates';
 import Notifications from '@/pages/dashboard/Notifications';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const ProtectedRoute = ({ adminOnly = false }) => {
   const { loading, isAuthenticated, isAdmin, profile } = useAuth();
@@ -106,6 +107,7 @@ function App() {
         </Router>
       </HelmetProvider>
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }
