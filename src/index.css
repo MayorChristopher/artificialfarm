@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Satoshi:wght@400;500;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Satoshi', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  @apply bg-primary-green text-white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', sans-serif;
+}
+
+.brand-pattern {
+  @apply bg-primary-green;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+  @apply text-secondary-yellow;
+}
+
+.btn-primary {
+  @apply bg-secondary-yellow text-primary-green font-bold transition-all duration-300 border-none hover:bg-accent-green hover:text-white hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent-green/20;
+}
+
+.btn-secondary {
+  @apply bg-transparent border-2 border-secondary-yellow text-secondary-yellow font-bold transition-all duration-300 hover:bg-secondary-yellow hover:text-primary-green hover:-translate-y-0.5;
+}
+
+.floating-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 20px rgba(255, 185, 0, 0.3); }
+  to { box-shadow: 0 0 30px rgba(255, 185, 0, 0.6); }
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-primary-green;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  @apply bg-secondary-yellow;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent-green;
+}
