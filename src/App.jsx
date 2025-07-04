@@ -31,6 +31,7 @@ import MyCourses from '@/pages/dashboard/MyCourses';
 import Progress from '@/pages/dashboard/Progress';
 import Certificates from '@/pages/dashboard/Certificates';
 import Notifications from '@/pages/dashboard/Notifications';
+import { Analytics } from '@vercel/analytics/react';
 
 const ProtectedRoute = ({ adminOnly = false }) => {
   const { loading, isAuthenticated, isAdmin, profile } = useAuth();
@@ -59,50 +60,53 @@ function LayoutWrapper({ children }) {
 
 function App() {
   return (
-    <HelmetProvider>
-      <Router>
-        <AuthProvider>
-          <LayoutWrapper>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/academy" element={<AcademyPage />} />
-              <Route path="/consulting" element={<ConsultingPage />} />
-              <Route path="/journey" element={<JourneyPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/careers" element={<CareersPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/research" element={<ResearchPage />} />
-              <Route path="/training" element={<TrainingPage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/password-reset" element={<PasswordResetPage />} />
-              <Route path="/verify" element={<VerifyEmailPage />} />
+    <>
+      <HelmetProvider>
+        <Router>
+          <AuthProvider>
+            <LayoutWrapper>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/academy" element={<AcademyPage />} />
+                <Route path="/consulting" element={<ConsultingPage />} />
+                <Route path="/journey" element={<JourneyPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/careers" element={<CareersPage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/research" element={<ResearchPage />} />
+                <Route path="/training" element={<TrainingPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/password-reset" element={<PasswordResetPage />} />
+                <Route path="/verify" element={<VerifyEmailPage />} />
 
-              <Route element={<ProtectedRoute />}>
-                <Route element={<DashboardLayout />}>
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/dashboard/my-courses" element={<MyCourses />} />
-                  <Route path="/dashboard/progress" element={<Progress />} />
-                  <Route path="/dashboard/certificates" element={<Certificates />} />
-                  <Route path="/dashboard/notifications" element={<Notifications />} />
-                  <Route path="/settings" element={<SettingsPage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<DashboardLayout />}>
+                    <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/dashboard/my-courses" element={<MyCourses />} />
+                    <Route path="/dashboard/progress" element={<Progress />} />
+                    <Route path="/dashboard/certificates" element={<Certificates />} />
+                    <Route path="/dashboard/notifications" element={<Notifications />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route element={<ProtectedRoute adminOnly={true} />}>
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/admin-dashboard/settings" element={<SettingsPage />} />
-              </Route>
+                <Route element={<ProtectedRoute adminOnly={true} />}>
+                  <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                  <Route path="/admin-dashboard/settings" element={<SettingsPage />} />
+                </Route>
 
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </LayoutWrapper>
-        </AuthProvider>
-      </Router>
-    </HelmetProvider>
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </LayoutWrapper>
+          </AuthProvider>
+        </Router>
+      </HelmetProvider>
+      <Analytics />
+    </>
   );
 }
 
