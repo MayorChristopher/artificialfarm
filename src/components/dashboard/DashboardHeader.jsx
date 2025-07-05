@@ -1,15 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Settings, Bell } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Settings, Bell } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
-
-const DashboardHeader = ({
-  user,
-  notifications,
-  onNotificationClick
-}) => {
+const DashboardHeader = ({ user, notifications, onNotificationClick }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -28,11 +23,16 @@ const DashboardHeader = ({
               <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.7, type: 'spring' }}
+                transition={{ duration: 0.7, type: "spring" }}
                 className="relative"
               >
                 <img
-                  src={user.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name || 'User') + '&background=FACC15&color=14532D'}
+                  src={
+                    user.avatar ||
+                    "https://ui-avatars.com/api/?name=" +
+                      encodeURIComponent(user.name || "User") +
+                      "&background=FACC15&color=14532D"
+                  }
                   alt={user.name}
                   className="w-24 h-24 lg:w-20 lg:h-20 rounded-full border-4 border-yellow-400 shadow-xl bg-white object-cover mx-auto lg:mx-0 animate-profile-avatar"
                 />
@@ -42,16 +42,20 @@ const DashboardHeader = ({
             </div>
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-auto mt-3 lg:mt-0">
               <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-2 drop-shadow-lg">
-                Welcome back, {user.name}! <span className="animate-wave">👋</span>
+                Welcome back, {user.name}!
               </h1>
               <p className="text-white/80 max-w-xs lg:max-w-none text-base md:text-lg mt-1">
                 Continue your agricultural learning journey
               </p>
               <div className="flex flex-wrap gap-2 mt-3 justify-center lg:justify-start">
-                <span className="px-3 py-1 rounded-full bg-green-500/30 text-green-100 text-xs font-bold shadow">Student</span>
-                <span className="px-3 py-1 rounded-full bg-blue-500/30 text-blue-100 text-xs font-bold shadow">Level: Beginner</span>
+                <span className="px-3 py-1 rounded-full bg-green-500/30 text-green-100 text-xs font-bold shadow">
+                  Student
+                </span>
+                <span className="px-3 py-1 rounded-full bg-blue-500/30 text-blue-100 text-xs font-bold shadow">
+                  Level: Beginner
+                </span>
                 {/* Progress badge, dynamic */}
-                {typeof user.progress === 'number' && (
+                {typeof user.progress === "number" && (
                   <span className="px-3 py-1 rounded-full bg-yellow-500/30 text-yellow-100 text-xs font-bold shadow">
                     Progress: {user.progress}%
                   </span>
@@ -61,7 +65,7 @@ const DashboardHeader = ({
           </div>
           {/* All navigation/actions are now in the sidebar for a smarter UX. */}
         </div>
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-gradient-to-r from-green-400/30 to-blue-400/30 rounded-xl p-5 flex items-center gap-4 shadow-lg">
             <span className="text-3xl md:text-4xl">🎯</span>
             <div className="flex-1">
@@ -78,7 +82,7 @@ const DashboardHeader = ({
             </div>
             <Button size="sm" className="ml-auto btn-secondary whitespace-nowrap">Claim</Button>
           </div>
-        </div>
+        </div> */}
         {/* Custom animation keyframes for slow pulse/spin and avatar bounce */}
         <style>{`
           @keyframes pulse-slow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }

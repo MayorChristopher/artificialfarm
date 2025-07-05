@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, Award, Clock, Bell, Settings, Home, X, Wrench } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Button from '@/components/ui/button';
 
 const navLinks = [
 	{ name: 'Overview', to: '/dashboard', icon: Home },
@@ -50,7 +51,7 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 					animate={{ x: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 30 } }}
 					exit={{ x: -300, opacity: 0, transition: { duration: 0.2 } }}
 				>
-					<aside className="relative w-64 bg-green-900/90 border-r border-yellow-400 min-h-screen py-8 px-4 animate-slide-in-left shadow-2xl">
+					<aside className="md:hidden relative w-64 bg-green-900/90 border-r border-yellow-400 min-h-screen py-8 px-4 animate-slide-in-left shadow-2xl">
 						<div className="flex items-center gap-2 mb-6 text-yellow-400 font-bold text-lg">
 							<Wrench className="w-6 h-6" />
 							<span>Tools</span>
@@ -90,3 +91,4 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 };
 
 export default DashboardSidebar;
+<Button className="w-full sm:w-auto ...">Save</Button>

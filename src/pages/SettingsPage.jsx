@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Wrench } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 const SettingsPage = () => {
   const { user, profile, isAdmin, signOut, refreshProfile } = useAuth();
@@ -72,9 +72,9 @@ const SettingsPage = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-        className="min-h-screen flex items-center justify-center py-8 px-4"
+        className="min-h-screen flex items-center justify-center py-8 px-2 sm:px-4"
       >
-        <div className="max-w-lg w-full glass-effect rounded-2xl p-8">
+        <div className="w-full max-w-lg glass-effect rounded-2xl p-4 sm:p-8">
           <h1 className="text-2xl font-bold text-white mb-6">Account Settings</h1>
           <div className="flex flex-col items-center mb-6">
             <img
@@ -211,18 +211,6 @@ const SettingsPage = () => {
           </div>
         </div>
       </motion.div>
-
-      {/* Floating Tools Button for mobile/tablet */}
-      {/* <div className="md:hidden fixed left-6 top-24 z-40">
-        <button
-          className="p-3 rounded-full bg-green-900/90 text-yellow-400 shadow-lg border-2 border-yellow-400 hover:bg-green-800/90 transition-colors"
-          onClick={() => window.dispatchEvent(new CustomEvent('dashboard:openSidebar'))}
-          aria-label="Open tools sidebar"
-        >
-          <Wrench className="w-7 h-7" />
-        </button>
-      </div> */}
-
       <div className="hidden md:flex mb-6">
         <button
           onClick={() => navigate('/dashboard')}
