@@ -1,13 +1,16 @@
+
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 import { createLogger, defineConfig } from 'vite';
 
 const isDev = process.env.NODE_ENV !== 'production';
-let inlineEditPlugin, editModeDevPlugin;
-
+// Import dev plugins only in development
+const devPlugins = [];
 if (isDev) {
-	inlineEditPlugin = (await import('./plugins/visual-editor/vite-plugin-react-inline-editor.js')).default;
-	editModeDevPlugin = (await import('./plugins/visual-editor/vite-plugin-edit-mode.js')).default;
+  // Use require for CJS compatibility
+  devPlugins.push(require('./plugins/visual-editor/vite-plugin-react-inline-editor.js').default());
+  devPlugins.push(require('./plugins/visual-editor/vite-plugin-edit-mode.js').default());
 }
 
 const configHorizonsViteErrorHandler = `
@@ -75,30 +78,26 @@ window.onerror = (message, source, lineno, colno, errorObj) => {
 	}, '*');
 };
 `;
-
 const configHorizonsConsoleErrroHandler = `
 const originalConsoleError = console.error;
 console.error = function(...args) {
-	originalConsoleError.apply(console, args);
+  originalConsoleError.apply(console, args);
 
-	let errorString = '';
-
-	for (let i = 0; i < args.length; i++) {
-		const arg = args[i];
-		if (arg instanceof Error) {
-			errorString = arg.stack || \`\${arg.name}: \${arg.message}\`;
-			break;
-		}
+  let errorString = '';
+  for (let i = 0; i < args.length; i++) {
+	const arg = args[i];
+	if (arg instanceof Error) {
+	  errorString = arg.stack || (arg.name + ': ' + arg.message);
+	  break;
 	}
-
-	if (!errorString) {
-		errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
-	}
-
-	window.parent.postMessage({
-		type: 'horizons-console-error',
-		error: errorString
-	}, '*');
+  }
+  if (!errorString) {
+	errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
+  }
+  window.parent.postMessage({
+	type: 'horizons-console-error',
+	error: errorString
+  }, '*');
 };
 `;
 
@@ -106,115 +105,162 @@ const configWindowFetchMonkeyPatch = `
 const originalFetch = window.fetch;
 
 window.fetch = function(...args) {
-	const url = args[0] instanceof Request ? args[0].url : args[0];
+  const url = args[0] instanceof Request ? args[0].url : args[0];
 
-	// Skip WebSocket URLs
-	if (url.startsWith('ws:') || url.startsWith('wss:')) {
-		return originalFetch.apply(this, args);
-	}
+  // Skip WebSocket URLs
+  if (url.startsWith('ws:') || url.startsWith('wss:')) {
+	return originalFetch.apply(this, args);
+  }
 
-	return originalFetch.apply(this, args)
-		.then(async response => {
-			const contentType = response.headers.get('Content-Type') || '';
-
-			// Exclude HTML document responses
-			const isDocumentResponse =
-				contentType.includes('text/html') ||
-				contentType.includes('application/xhtml+xml');
-
-			if (!response.ok && !isDocumentResponse) {
-					const responseClone = response.clone();
-					const errorFromRes = await responseClone.text();
-					const requestUrl = response.url;
-					console.error(\`Fetch error from \${requestUrl}: \${errorFromRes}\`);
-			}
-
-			return response;
-		})
-		.catch(error => {
-			if (!url.match(/\.html?$/i)) {
-				console.error(error);
-			}
-
-			throw error;
-		});
+  return originalFetch.apply(this, args)
+	.then(async response => {
+	  const contentType = response.headers.get('Content-Type') || '';
+	  // Exclude HTML document responses
+	  const isDocumentResponse =
+		contentType.includes('text/html') ||
+		contentType.includes('application/xhtml+xml');
+	  if (!response.ok && !isDocumentResponse) {
+		const responseClone = response.clone();
+		const errorFromRes = await responseClone.text();
+		const requestUrl = response.url;
+		console.error('Fetch error from ' + requestUrl + ': ' + errorFromRes);
+	  }
+	  return response;
+	})
+	.catch(error => {
+	  if (!url.match(/\.html?$/i)) {
+		console.error(error);
+	  }
+	  throw error;
+	});
 };
 `;
 
 const addTransformIndexHtml = {
-	name: 'add-transform-index-html',
-	transformIndexHtml(html) {
-		return {
-			html,
-			tags: [
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: configHorizonsRuntimeErrorHandler,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: configHorizonsViteErrorHandler,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: {type: 'module'},
-					children: configHorizonsConsoleErrroHandler,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: configWindowFetchMonkeyPatch,
-					injectTo: 'head',
-				},
-			],
-		};
-	},
+  name: 'add-transform-index-html',
+  transformIndexHtml(html) {
+	return {
+	  html,
+	  tags: [
+		{
+		  tag: 'script',
+		  attrs: { type: 'module' },
+		  children: configHorizonsRuntimeErrorHandler,
+		  injectTo: 'head',
+		},
+		{
+		  tag: 'script',
+		  attrs: { type: 'module' },
+		  children: configHorizonsViteErrorHandler,
+		  injectTo: 'head',
+		},
+		{
+		  tag: 'script',
+		  attrs: {type: 'module'},
+		  children: configHorizonsConsoleErrroHandler,
+		  injectTo: 'head',
+		},
+		{
+		  tag: 'script',
+		  attrs: { type: 'module' },
+		  children: configWindowFetchMonkeyPatch,
+		  injectTo: 'head',
+		},
+	  ],
+	};
+  },
 };
 
 console.warn = () => {};
 
-const logger = createLogger()
-const loggerError = logger.error
+const logger = createLogger();
+const loggerError = logger.error;
 
 logger.error = (msg, options) => {
-	if (options?.error?.toString().includes('CssSyntaxError: [postcss]')) {
-		return;
-	}
-
-	loggerError(msg, options);
-}
+  if (options?.error?.toString().includes('CssSyntaxError: [postcss]')) {
+	return;
+  }
+  loggerError(msg, options);
+};
 
 export default defineConfig({
-	customLogger: logger,
-	plugins: [
-		...(isDev ? [inlineEditPlugin(), editModeDevPlugin()] : []),
-		react(),
-		addTransformIndexHtml
-	],
-	server: {
-		cors: true,
-		headers: {
-			'Cross-Origin-Embedder-Policy': 'credentialless',
-		},
-		allowedHosts: true,
+  customLogger: logger,
+  plugins: [
+	...devPlugins,
+	react(),
+	addTransformIndexHtml,
+	VitePWA({
+	  registerType: 'autoUpdate',
+	  manifest: {
+		name: 'Artificial Farm Academy',
+		short_name: 'AFA',
+		description: 'Modern agricultural learning and consulting platform',
+		theme_color: '#093001',
+		background_color: '#E8D6D6',
+		display: 'standalone',
+		start_url: '/',
+		icons: [
+		  {
+			src: '/pwa-192x192.png',
+			sizes: '192x192',
+			type: 'image/png',
+		  },
+		  {
+			src: '/pwa-512x512.png',
+			sizes: '512x512',
+			type: 'image/png',
+		  },
+		  {
+			src: '/pwa-512x512.png',
+			sizes: '512x512',
+			type: 'image/png',
+			purpose: 'any maskable',
+		  },
+		],
+	  },
+	  workbox: {
+		globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+		runtimeCaching: [
+		  {
+			urlPattern: /^https:\/\/pynedpawqtllihyfejry.supabase.co\//,
+			handler: 'NetworkFirst',
+			options: {
+			  cacheName: 'supabase-api',
+			  expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
+			},
+		  },
+		],
+	  },
+	  devOptions: {
+		enabled: isDev,
+	  },
+	}),
+  ],
+  server: {
+	cors: true,
+	headers: {
+	  'Cross-Origin-Embedder-Policy': 'credentialless',
 	},
-	resolve: {
-		extensions: ['.jsx', '.js', '.tsx', '.ts', '.json', ],
-		alias: {
-			'@': path.resolve(__dirname, './src'),
-		},
+	allowedHosts: true,
+	port: 5173,
+	open: true,
+  },
+  resolve: {
+	extensions: ['.jsx', '.js', '.tsx', '.ts', '.json'],
+	alias: {
+	  '@': path.resolve(__dirname, './src'),
 	},
-	build: {
-		rollupOptions: {
-			external: [
-				'@babel/parser',
-				'@babel/traverse',
-				'@babel/generator',
+  },
+  build: {
+	outDir: 'dist',
+	sourcemap: isDev,
+	rollupOptions: {
+	  external: [
+		'@babel/parser',
+		'@babel/traverse',
+		'@babel/generator',
+		'@babel/types',
+
 				'@babel/types'
 			]
 		}
