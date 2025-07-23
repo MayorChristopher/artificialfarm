@@ -1,30 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Play, 
-  Users, 
-  Award, 
-  TrendingUp, 
-  Leaf, 
-  Cog, 
-  BookOpen, 
+import {
+  ArrowRight,
+  Play,
+  Users,
+  Award,
+  TrendingUp,
+  Leaf,
+  Cog,
+  BookOpen,
   Tractor,
   Star,
   CheckCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/lib/supabase';
 
 const HomePage = () => {
-  const stats = [
-    { icon: Users, label: 'Farmers Trained', value: '5,000+', color: 'text-blue-400' },
-    { icon: Award, label: 'Certificates Issued', value: '2,500+', color: 'text-yellow-400' },
-    { icon: TrendingUp, label: 'Yield Improvement', value: '40%', color: 'text-green-400' },
-    { icon: Leaf, label: 'Sustainable Projects', value: '150+', color: 'text-emerald-400' }
-  ];
+  const [stats, setStats] = useState([
+    { icon: Users, label: 'Farmers Trained', value: '...', color: 'text-blue-400' },
+    { icon: Award, label: 'Certificates Issued', value: '...', color: 'text-yellow-400' },
+    { icon: TrendingUp, label: 'Yield Improvement', value: '...', color: 'text-green-400' },
+    { icon: Leaf, label: 'Sustainable Projects', value: '...', color: 'text-emerald-400' }
+  ]);
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      setLoadingStats(true);
+      const { data, error } = await supabase.from('site_stats').select('*').order('updated_at', { ascending: false }).limit(1).single();
+      if (error || !data) {
+        setLoadingStats(false);
+        return;
+      }
+      setStats([
+        { icon: Users, label: 'Farmers Trained', value: data.farmers_trained?.toLocaleString() || '0', color: 'text-blue-400' },
+        { icon: Award, label: 'Certificates Issued', value: data.certificates_issued?.toLocaleString() || '0', color: 'text-yellow-400' },
+        { icon: TrendingUp, label: 'Yield Improvement', value: (data.yield_improvement ? data.yield_improvement + '%' : '0%'), color: 'text-green-400' },
+        { icon: Leaf, label: 'Sustainable Projects', value: data.sustainable_projects?.toLocaleString() || '0', color: 'text-emerald-400' }
+      ]);
+      setLoadingStats(false);
+    };
+    fetchStats();
+  }, []);
 
   const features = [
     {
@@ -101,7 +122,7 @@ const HomePage = () => {
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-green-900/20" />
-        
+
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             animate={{ rotate: 360 }}
@@ -131,7 +152,7 @@ const HomePage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight mt-12"
             >
               Transforming Agriculture With{' '}
               <span className="text-yellow-400">Tomorrow's Technology</span>
@@ -143,7 +164,7 @@ const HomePage = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl mx-auto"
             >
-              Empowering farmers through innovation, education, and sustainable practices. 
+              Empowering farmers through innovation, education, and sustainable practices.
               Join thousands who have learned to do more with modern agricultural solutions.
             </motion.p>
 
@@ -169,18 +190,14 @@ const HomePage = () => {
               className="relative max-w-2xl mx-auto"
             >
               <div className="relative rounded-2xl overflow-hidden glass-effect p-4">
-                <img  
+                <video
                   className="w-full h-64 md:h-80 object-cover rounded-xl"
-                  alt="Modern farm with advanced technology and equipment"
-                 src="https://images.unsplash.com/photo-1554048807-b043cffa8118" />
-                <button
-                  onClick={handleVideoPlay}
-                  className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-colors group"
+                  controls
+                  poster="https://images.unsplash.com/photo-1554048807-b043cffa8118"
                 >
-                  <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play className="w-6 h-6 text-green-900 ml-1" />
-                  </div>
-                </button>
+                  <source src="/videos/intro.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
               <p className="text-sm text-white/60 mt-2">Watch: Farm Technology Overview</p>
             </motion.div>
@@ -191,25 +208,29 @@ const HomePage = () => {
       <section className="py-20 bg-green-900/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="text-center"
-              >
-                <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 glass-effect rounded-full flex items-center justify-center">
-                    <stat.icon className={`w-8 h-8 ${stat.color}`} />
+            {loadingStats ? (
+              <div className="col-span-4 text-center text-white/70 text-lg">Loading statistics...</div>
+            ) : (
+              stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  className="text-center"
+                >
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 glass-effect rounded-full flex items-center justify-center">
+                      <stat.icon className={`w-8 h-8 ${stat.color}`} />
+                    </div>
                   </div>
-                </div>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-white/70 text-sm">{stat.label}</div>
-              </motion.div>
-            ))}
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-white/70 text-sm">{stat.label}</div>
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -292,13 +313,13 @@ const HomePage = () => {
                     <p className="text-white/60 text-sm">{testimonial.role}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                
+
                 <p className="text-white/80 leading-relaxed">
                   "{testimonial.content}"
                 </p>
@@ -320,10 +341,10 @@ const HomePage = () => {
               Ready to Transform Your <span className="text-yellow-400">Agricultural Journey?</span>
             </h2>
             <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
-              Join thousands of farmers who have already started their journey towards sustainable, 
+              Join thousands of farmers who have already started their journey towards sustainable,
               profitable, and innovative agriculture.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <div className="flex items-center space-x-2 text-white/80">
                 <CheckCircle className="w-5 h-5 text-green-400" />
@@ -338,7 +359,7 @@ const HomePage = () => {
                 <span>Ongoing Support</span>
               </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/register">
                 <Button className="btn-primary text-lg px-8 py-4 rounded-full">

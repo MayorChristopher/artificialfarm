@@ -32,6 +32,16 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Add state for site stats
+  const [siteStats, setSiteStats] = useState({
+    farmers_trained: '',
+    certificates_issued: '',
+    yield_improvement: '',
+    sustainable_projects: '',
+    id: null
+  });
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsSaving, setStatsSaving] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -47,6 +57,34 @@ const AdminDashboard = () => {
       loadAdminData();
     }
   }, [isAdmin]);
+
+  useEffect(() => {
+    // Fetch site stats on mount
+    const fetchSiteStats = async () => {
+      setStatsLoading(true);
+      const { data, error } = await supabase
+        .from('site_stats')
+        .select('*')
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!data) {
+        // Show a message or prompt admin to create stats
+      }
+      if (!error && data) {
+        setSiteStats({
+          farmers_trained: data.farmers_trained,
+          certificates_issued: data.certificates_issued,
+          yield_improvement: data.yield_improvement,
+          sustainable_projects: data.sustainable_projects,
+          id: data.id
+        });
+      }
+      setStatsLoading(false);
+    };
+    fetchSiteStats();
+  }, []);
 
   const loadAdminData = async () => {
     setLoading(true);
@@ -142,6 +180,31 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleStatsChange = (e) => {
+    setSiteStats({ ...siteStats, [e.target.name]: e.target.value });
+  };
+
+  const handleStatsSave = async (e) => {
+    e.preventDefault();
+    setStatsSaving(true);
+    const { error } = await supabase
+      .from('site_stats')
+      .update({
+        farmers_trained: Number(siteStats.farmers_trained),
+        certificates_issued: Number(siteStats.certificates_issued),
+        yield_improvement: Number(siteStats.yield_improvement),
+        sustainable_projects: Number(siteStats.sustainable_projects),
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', siteStats.id);
+    setStatsSaving(false);
+    if (error) {
+      toast({ title: 'Failed to update statistics', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Statistics updated', description: 'Homepage statistics have been updated.' });
+    }
+  };
+
   const handleUpload = () => toast({ title: "📤 Upload Feature", description: "🚧 File upload isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀" });
   const handleAnalytics = () => toast({ title: "📊 Analytics Dashboard", description: "🚧 Analytics dashboard isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀" });
   const handleBulkEmail = () => toast({ title: "📧 Bulk Email", description: "🚧 Bulk email feature isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀" });
@@ -226,8 +289,8 @@ const AdminDashboard = () => {
                     </p>
                   </div>
                 </div>
-        {/* Custom animation keyframes for admin dashboard avatar and icon */}
-        <style>{`
+                {/* Custom animation keyframes for admin dashboard avatar and icon */}
+                <style>{`
           @keyframes spin-slow { 100% { transform: rotate(360deg); } }
           .animate-spin-slow { animation: spin-slow 8s linear infinite; }
           @keyframes profile-avatar-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -249,6 +312,42 @@ const AdminDashboard = () => {
               </div>
             </div>
           </motion.div>
+          {isAdmin && (
+            <div className="glass-effect rounded-2xl p-6 mb-8 mt-8">
+              <h2 className="text-2xl font-bold text-white mb-4">Homepage Statistics</h2>
+              {statsLoading ? (
+                <div className="text-white/70">Loading statistics...</div>
+              ) : (
+                <form onSubmit={handleStatsSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-white/80 mb-1">Farmers Trained</label>
+                    <input type="number" name="farmers_trained" value={siteStats.farmers_trained} onChange={handleStatsChange} className="w-full rounded p-2 bg-white/10 text-white" required />
+                  </div>
+                  <div>
+                    <label className="block text-white/80 mb-1">Certificates Issued</label>
+                    <input type="number" name="certificates_issued" value={siteStats.certificates_issued} onChange={handleStatsChange} className="w-full rounded p-2 bg-white/10 text-white" required />
+                  </div>
+                  <div>
+                    <label className="block text-white/80 mb-1">Yield Improvement (%)</label>
+                    <input type="number" name="yield_improvement" value={siteStats.yield_improvement} onChange={handleStatsChange} className="w-full rounded p-2 bg-white/10 text-white" required />
+                  </div>
+                  <div>
+                    <label className="block text-white/80 mb-1">Sustainable Projects</label>
+                    <input type="number" name="sustainable_projects" value={siteStats.sustainable_projects} onChange={handleStatsChange} className="w-full rounded p-2 bg-white/10 text-white" required />
+                  </div>
+                  <div className="col-span-1 md:col-span-2 flex justify-end mt-4">
+                    <button
+                      type="submit"
+                      className="btn-primary px-8 py-3 rounded-full"
+                      disabled={statsSaving || statsLoading || !siteStats.id}
+                    >
+                      {statsSaving ? 'Saving...' : 'Save Statistics'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
           <AdminStats stats={stats} />
           <div className="glass-effect rounded-2xl p-6 mb-8">
             <AdminTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />

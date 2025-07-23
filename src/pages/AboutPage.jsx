@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  Target, 
-  Eye, 
-  Heart, 
-  Users, 
-  Award, 
-  Globe, 
-  Leaf, 
-  Cog, 
-  BookOpen, 
+import {
+  Target,
+  Eye,
+  Heart,
+  Users,
+  Award,
+  Globe,
+  Leaf,
+  Cog,
+  BookOpen,
   Tractor,
   ArrowRight,
   CheckCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
 
 const AboutPage = () => {
   const brandSymbols = [
@@ -77,12 +78,30 @@ const AboutPage = () => {
     }
   ];
 
-  const achievements = [
-    { number: '5,000+', label: 'Farmers Trained' },
-    { number: '150+', label: 'Sustainable Projects' },
-    { number: '25+', label: 'States Reached' },
-    { number: '40%', label: 'Average Yield Increase' }
-  ];
+  const [achievements, setAchievements] = useState([
+    { number: '...', label: 'Farmers Trained' },
+    { number: '...', label: 'Sustainable Projects' },
+    { number: '...', label: 'States Reached' },
+    { number: '...', label: 'Average Yield Increase' }
+  ]);
+  const [loadingAchievements, setLoadingAchievements] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      setLoadingAchievements(true);
+      const { data, error } = await supabase.from('site_stats').select('*').order('updated_at', { ascending: false }).limit(1).single();
+      if (!error && data) {
+        setAchievements([
+          { number: data.farmers_trained?.toLocaleString() || '0', label: 'Farmers Trained' },
+          { number: data.sustainable_projects?.toLocaleString() || '0', label: 'Sustainable Projects' },
+          { number: '25+', label: 'States Reached' }, // Static or update if you have this in Supabase
+          { number: (data.yield_improvement ? data.yield_improvement + '%' : '0%'), label: 'Average Yield Increase' }
+        ]);
+      }
+      setLoadingAchievements(false);
+    };
+    fetchStats();
+  }, []);
 
   const services = [
     {
@@ -123,7 +142,7 @@ const AboutPage = () => {
 
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-green-900/30" />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -138,10 +157,11 @@ const AboutPage = () => {
               Empowering the future of agriculture through innovation, education, and sustainable practices
             </p>
             <div className="flex justify-center">
-              <img  
+              <img
                 className="w-full max-w-3xl h-64 md:h-80 object-cover rounded-2xl glass-effect p-4"
                 alt="Agricultural innovation center with modern farming equipment and training facilities"
-               src="https://images.unsplash.com/photo-1554048807-b043cffa8118" />
+                src="/images/about-image.jpg"
+              />
             </div>
           </motion.div>
         </div>
@@ -161,7 +181,7 @@ const AboutPage = () => {
               </div>
               <h2 className="text-2xl font-bold text-white mb-4">Our Mission</h2>
               <p className="text-white/80 leading-relaxed">
-                "Aid innovation in farming, seed tech, agro-input production and supply." 
+                "Aid innovation in farming, seed tech, agro-input production and supply."
                 We are committed to transforming agriculture through cutting-edge technology and sustainable practices.
               </p>
             </motion.div>
@@ -177,7 +197,7 @@ const AboutPage = () => {
               </div>
               <h2 className="text-2xl font-bold text-white mb-4">Our Vision</h2>
               <p className="text-white/80 leading-relaxed">
-                "Support farmers and communities through sustainable projects and research." 
+                "Support farmers and communities through sustainable projects and research."
                 We envision a future where every farmer has access to modern agricultural knowledge and tools.
               </p>
             </motion.div>
@@ -258,20 +278,24 @@ const AboutPage = () => {
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {achievements.map((achievement, index) => (
-              <motion.div
-                key={achievement.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="text-center"
-              >
-                <div className="text-4xl md:text-5xl font-bold text-yellow-400 mb-2">
-                  {achievement.number}
-                </div>
-                <div className="text-white/70">{achievement.label}</div>
-              </motion.div>
-            ))}
+            {loadingAchievements ? (
+              <div className="col-span-4 text-center text-white/70 text-lg">Loading achievements...</div>
+            ) : (
+              achievements.map((achievement, index) => (
+                <motion.div
+                  key={achievement.label}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  className="text-center"
+                >
+                  <div className="text-4xl md:text-5xl font-bold text-yellow-400 mb-2">
+                    {achievement.number}
+                  </div>
+                  <div className="text-white/70">{achievement.label}</div>
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -365,10 +389,10 @@ const AboutPage = () => {
               Ready to Join Our <span className="text-yellow-400">Agricultural Revolution?</span>
             </h2>
             <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
-              Whether you're a farmer looking to improve your practices or an entrepreneur seeking agricultural opportunities, 
+              Whether you're a farmer looking to improve your practices or an entrepreneur seeking agricultural opportunities,
               we're here to support your journey.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button onClick={handleExploreServices} className="btn-primary text-lg px-8 py-4 rounded-full">
                 Explore Our Services
