@@ -213,7 +213,7 @@ const AboutPage = () => {
               </div>
               <h2 className="text-2xl font-bold text-white mb-4">Our Slogan</h2>
               <p className="text-white/80 leading-relaxed">
-                <span className="text-yellow-400 font-semibold text-xl">"Learn to do more"</span><br />
+                <span className="text-yellow-400 font-semibold text-xl">"Learn to produce more"</span><br />
                 This embodies our commitment to continuous learning and improvement in agricultural practices.
               </p>
             </motion.div>
