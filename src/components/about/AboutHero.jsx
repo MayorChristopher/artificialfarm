@@ -23,7 +23,7 @@ const AboutHero = () => {
                         <img
                             className="w-full max-w-3xl h-64 md:h-80 object-cover rounded-2xl glass-effect p-4"
                             alt="Agricultural innovation center with modern farming equipment and training facilities"
-                            src="/images/about-image.jpg"
+                            src="https://res.cloudinary.com/dic5sbkn3/image/upload/v1753528451/about-image_vyifi2.jpg"
                         />
                     </div>
                 </motion.div>
