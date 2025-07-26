@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  BookOpen, 
-  FileText, 
-  Video, 
-  Image, 
-  Plus, 
-  Edit, 
-  Trash2, 
+import {
+  BookOpen,
+  FileText,
+  Video,
+  Image,
+  Plus,
+  Edit,
+  Trash2,
   Eye,
   Search,
   RefreshCw,
@@ -88,7 +88,7 @@ const AdminContent = () => {
 
   const handleAddContent = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.description) {
       toast({ title: "Missing Information", description: "Please fill in all required fields.", variant: "destructive" });
       return;
@@ -125,7 +125,7 @@ const AdminContent = () => {
 
   const handleUpdateContent = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.description) {
       toast({ title: "Missing Information", description: "Please fill in all required fields.", variant: "destructive" });
       return;
@@ -259,32 +259,26 @@ const AdminContent = () => {
         </div>
       </div>
 
-      <div className="glass-effect rounded-xl p-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50" />
-              <Input
-                placeholder="Search content..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50"
-              />
-            </div>
-          </div>
-          <div className="sm:w-48">
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            >
-              {contentTypes.map(type => (
-                <option key={type.value} value={type.value} className="bg-green-900 text-white">
-                  {type.label}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-between items-stretch md:items-center mb-6">
+        <div className="relative flex-1 max-w-md w-full">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50" />
+          <Input
+            placeholder="Search content..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 w-full"
+          />
+        </div>
+        <div className="w-full md:w-48">
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          >
+            {contentTypes.map((type) => (
+              <option key={type.value} value={type.value}>{type.label}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -310,17 +304,16 @@ const AdminContent = () => {
                       <div className="flex items-center gap-3 mb-2">
                         <TypeIcon className={`w-5 h-5 ${getTypeColor(item.type)}`} />
                         <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          item.is_published 
-                            ? 'bg-green-500/20 text-green-400' 
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.is_published
+                            ? 'bg-green-500/20 text-green-400'
                             : 'bg-yellow-500/20 text-yellow-400'
-                        }`}>
+                          }`}>
                           {item.is_published ? 'Published' : 'Draft'}
                         </span>
                       </div>
-                      
+
                       <p className="text-white/70 text-sm mb-2">{item.description}</p>
-                      
+
                       <div className="flex items-center gap-4 text-xs text-white/50">
                         <span>Type: {item.type}</span>
                         <span>Author: {item.author || 'Admin'}</span>
@@ -381,7 +374,7 @@ const AdminContent = () => {
                   <label className="text-white font-medium">Title *</label>
                   <Input
                     value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="Enter content title"
                     required
                     className="mt-1"
@@ -391,7 +384,7 @@ const AdminContent = () => {
                   <label className="text-white font-medium">Type</label>
                   <select
                     value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                     className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   >
                     <option value="article" className="bg-green-900 text-white">Article</option>
@@ -406,7 +399,7 @@ const AdminContent = () => {
                 <label className="text-white font-medium">Description *</label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Enter content description"
                   rows={3}
                   required
@@ -418,7 +411,7 @@ const AdminContent = () => {
                 <label className="text-white font-medium">Content</label>
                 <textarea
                   value={formData.content}
-                  onChange={(e) => setFormData({...formData, content: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   placeholder="Enter content details (optional)"
                   rows={6}
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
@@ -430,7 +423,7 @@ const AdminContent = () => {
                   <label className="text-white font-medium">Author</label>
                   <Input
                     value={formData.author}
-                    onChange={(e) => setFormData({...formData, author: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                     placeholder="Enter author name"
                     className="mt-1"
                   />
@@ -439,7 +432,7 @@ const AdminContent = () => {
                   <input
                     type="checkbox"
                     checked={formData.is_published}
-                    onChange={(e) => setFormData({...formData, is_published: e.target.checked})}
+                    onChange={(e) => setFormData({ ...formData, is_published: e.target.checked })}
                     className="w-4 h-4 text-yellow-400 bg-white/10 border-white/20 rounded focus:ring-yellow-400 focus:ring-2"
                   />
                   <span className="ml-2 text-white/70 text-sm">Published</span>

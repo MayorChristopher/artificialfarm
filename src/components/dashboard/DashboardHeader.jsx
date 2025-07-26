@@ -19,7 +19,7 @@ const DashboardHeader = ({ user, notifications, onNotificationClick }) => {
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-4 md:p-0">
           {/* Avatar and user info */}
           <div className="flex flex-col items-center w-full lg:flex-row lg:items-center lg:w-auto lg:justify-start gap-4">
-            <div className="flex justify-center w-full lg:w-auto">
+            <div className="flex justify-center w-full lg:w-auto min-w-[96px] min-h-[96px]">
               <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -30,11 +30,12 @@ const DashboardHeader = ({ user, notifications, onNotificationClick }) => {
                   src={
                     user.avatar ||
                     "https://ui-avatars.com/api/?name=" +
-                      encodeURIComponent(user.name || "User") +
-                      "&background=FACC15&color=14532D"
+                    encodeURIComponent(user.name || "User") +
+                    "&background=FACC15&color=14532D"
                   }
                   alt={user.name}
-                  className="w-24 h-24 lg:w-20 lg:h-20 rounded-full border-4 border-yellow-400 shadow-xl bg-white object-cover mx-auto lg:mx-0 animate-profile-avatar"
+                  className="w-24 h-24 max-w-[96px] max-h-[96px] rounded-full border-4 border-yellow-400 shadow-xl bg-white object-cover mx-auto animate-profile-avatar"
+                  style={{ aspectRatio: '1/1', minWidth: 0, minHeight: 0 }}
                 />
                 {/* Animated ring */}
                 <span className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-spin-slow pointer-events-none" />
