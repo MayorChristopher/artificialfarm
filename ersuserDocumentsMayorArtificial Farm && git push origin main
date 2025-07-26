@@ -1,0 +1,5 @@
+[33m38c0bfd[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Remove large video files and update .gitignore
+[33m396ae8f[m Update Android app assets and splash screens
+[33m116f9d3[m made it look good
+[33mdaea037[m Configure Git LFS for large files
+[33m4fb13e6[m Update About page image, sync statistics with homepage, and admin dashboard improvements
