@@ -120,55 +120,7 @@ const SettingsPage = () => {
             <Button onClick={signOut} className="btn-destructive w-full mt-4">Sign Out</Button>
           </div>
 
-          {isAdmin && (
-            <div className="mt-10 p-4 rounded-xl bg-yellow-400/10 border border-yellow-400/30">
-              <h3 className="text-lg font-bold text-yellow-400 mb-2">Admin Controls</h3>
-              <div className="text-white/80 mb-4">Manage system settings, user roles, and more.</div>
-              <div className="mb-4">
-                <h4 className="text-white font-semibold mb-1">System Info</h4>
-                <div className="text-white/60 text-sm">
-                  <div>App Version: <span className="font-mono">1.0.0</span></div>
-                  <div>Environment: <span className="font-mono">{process.env.NODE_ENV}</span></div>
-                  <div>Supabase Project: <span className="font-mono">{import.meta.env.VITE_SUPABASE_PROJECT || 'N/A'}</span></div>
-                </div>
-              </div>
-              <div className="mb-4">
-                <h4 className="text-white font-semibold mb-1">User Role Management</h4>
-                <div className="flex gap-2">
-                  <Button
-                    className="btn-secondary"
-                    onClick={() => toast({ title: "Promote User", description: "🚧 User promotion coming soon!" })}
-                  >
-                    Promote User to Admin
-                  </Button>
-                  <Button
-                    className="btn-secondary"
-                    onClick={() => toast({ title: "Demote User", description: "🚧 User demotion coming soon!" })}
-                  >
-                    Demote Admin to User
-                  </Button>
-                </div>
-              </div>
-              <div className="mb-4">
-                <h4 className="text-white font-semibold mb-1">Maintenance</h4>
-                <Button
-                  className="btn-destructive"
-                  onClick={() => toast({ title: "Maintenance Mode", description: "🚧 Maintenance mode coming soon!" })}
-                >
-                  Enable Maintenance Mode
-                </Button>
-              </div>
-              <div>
-                <h4 className="text-white font-semibold mb-1">Logs & Auditing</h4>
-                <Button
-                  className="btn-secondary"
-                  onClick={() => toast({ title: "View Logs", description: "🚧 Audit logs coming soon!" })}
-                >
-                  View Audit Logs
-                </Button>
-              </div>
-            </div>
-          )}
+
 
           {/* Download Account Data */}
           <hr className="border-yellow-400/30 my-6" />

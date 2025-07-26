@@ -20,7 +20,7 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 		<>
 			{/* Desktop sidebar */}
 			<motion.aside
-				className="hidden md:flex flex-col w-64 min-h-screen bg-white/5 border-r border-white/10 py-8 px-4 sticky top-0"
+				className="hidden md:flex flex-col w-64 h-full bg-white/5 border-r border-white/10 py-8 px-4"
 				{...(motionProps && !open ? {} : motionProps || {})}
 			>
 				<div className="flex items-center gap-2 mb-6 text-yellow-400 font-bold text-lg">
@@ -32,9 +32,8 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 						<Link
 							key={link.to}
 							to={link.to}
-							className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors text-white/80 hover:bg-yellow-400/10 hover:text-yellow-400 ${
-								location.pathname === link.to ? 'bg-yellow-400/10 text-yellow-400' : ''
-							}`}
+							className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors text-white/80 hover:bg-yellow-400/10 hover:text-yellow-400 ${location.pathname === link.to ? 'bg-yellow-400/10 text-yellow-400' : ''
+								}`}
 							onClick={onClose}
 						>
 							<link.icon className="w-5 h-5" />
@@ -68,9 +67,8 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 								<Link
 									key={link.to}
 									to={link.to}
-									className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors text-white hover:bg-green-800/80 hover:text-yellow-400 ${
-										location.pathname === link.to ? 'bg-green-800/80 text-yellow-400 font-bold' : ''
-									}`}
+									className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors text-white hover:bg-green-800/80 hover:text-yellow-400 ${location.pathname === link.to ? 'bg-green-800/80 text-yellow-400 font-bold' : ''
+										}`}
 									onClick={onClose}
 								>
 									<link.icon className="w-5 h-5" />

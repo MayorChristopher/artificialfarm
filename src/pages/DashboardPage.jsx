@@ -21,6 +21,7 @@ import UpcomingEvents from '@/components/dashboard/UpcomingEvents';
 import NotificationPanel from '@/components/dashboard/NotificationPanel';
 import QuickActions from '@/components/dashboard/QuickActions';
 
+
 const DashboardPage = () => {
   const { user, profile, isAuthenticated, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -125,7 +126,7 @@ const DashboardPage = () => {
     if (!user) return [];
     const { data, error } = await supabase
       .from('course_enrollments')
-      .select(`*, courses (*)`)
+      .select(`*, courses (id, title, description, duration, category, instructor, lessons, price, level, rating, students)`)
       .eq('user_id', user.id);
     if (error) return [];
     return data || [];
@@ -220,6 +221,9 @@ const DashboardPage = () => {
         onProfileUpdate={handleProfileUpdate}
         onNotificationClick={handleNotificationClick}
       />
+
+
+
       <StatsGrid stats={stats} />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
         <div className="flex flex-col gap-4 sm:gap-6 xl:gap-8 col-span-1 md:col-span-2">

@@ -51,7 +51,11 @@ export const AuthProvider = ({ children }) => {
         return null;
       }
       setProfile(data);
-      setIsAdmin(data.role === 'admin');
+
+      // Check if user has admin role from profiles table
+      const isUserAdmin = data.role === 'admin' || data.is_admin === true;
+      setIsAdmin(isUserAdmin);
+
       localStorage.setItem('afa_profile', JSON.stringify(data));
       return data;
     } catch (err) {
@@ -69,6 +73,8 @@ export const AuthProvider = ({ children }) => {
       await fetchProfile(user);
     }
   };
+
+
 
   // Initial session restoration + auth change listener
   useEffect(() => {
@@ -127,6 +133,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user, profile, loading]);
 
+  // Refresh profile periodically to ensure admin status is current
+  useEffect(() => {
+    if (user) {
+      const interval = setInterval(() => {
+        fetchProfile(user);
+      }, 60000); // Refresh every 60 seconds instead of 30
+
+      return () => clearInterval(interval);
+    }
+  }, [user]);
+
   // Auth Actions
   const signUp = async (name, email, phone, password) => {
     const { data, error } = await supabase.auth.signUp({
@@ -136,8 +153,6 @@ export const AuthProvider = ({ children }) => {
         data: {
           full_name: name,
           phone,
-          role: 'student',
-          provider: 'email',
         },
         emailRedirectTo: `${window.location.origin}/verify`,
       },
@@ -159,10 +174,7 @@ export const AuthProvider = ({ children }) => {
           id: data.user.id,
           full_name: name,
           phone: phone,
-          role: 'student',
-          provider: 'email',
           avatar_url: null,
-          progress: { certificates: 0, hoursLearned: 0 },
         },
       ]);
       if (profileError) {
@@ -243,7 +255,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signInWithOAuth,
     signOut,
-    refreshProfile, // <-- expose refreshProfile
+    refreshProfile,
   }), [user, session, profile, isAdmin, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

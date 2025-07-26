@@ -33,6 +33,7 @@ import Certificates from '@/pages/dashboard/Certificates';
 import Notifications from '@/pages/dashboard/Notifications';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import './styles/buttons.css';
 
 const ProtectedRoute = ({ adminOnly = false }) => {
   const { loading, isAuthenticated, isAdmin, profile } = useAuth();

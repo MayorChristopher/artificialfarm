@@ -16,25 +16,50 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-green-900/80 via-yellow-900/40 to-blue-900/60 font-satoshi">
+      {/* Desktop Sidebar - Full Height */}
+      <div className="hidden md:block w-64 flex-shrink-0 min-h-screen">
+        <DashboardSidebar
+          open={true}
+          onClose={() => setSidebarOpen(false)}
+          motionProps={{
+            initial: { x: -300, opacity: 0 },
+            animate: {
+              x: 0,
+              opacity: 1,
+              transition: { type: "spring", stiffness: 300, damping: 30 },
+            },
+            exit: { x: -300, opacity: 0, transition: { duration: 0.2 } },
+          }}
+        />
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
-        <div className=" md:block md:w-64">
-          <DashboardSidebar
-            open={sidebarOpen}
-            onClose={() => setSidebarOpen(false)}
-            motionProps={{
-              initial: { x: -300, opacity: 0 },
-              animate: {
-                x: 0,
-                opacity: 1,
-                transition: { type: "spring", stiffness: 300, damping: 30 },
-              },
-              exit: { x: -300, opacity: 0, transition: { duration: 0.2 } },
-            }}
-          />
-        </div>
+        {sidebarOpen && (
+          <div className="md:hidden fixed inset-0 z-50">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+            <div className="absolute left-0 top-0 h-full w-64">
+              <DashboardSidebar
+                open={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                motionProps={{
+                  initial: { x: -300, opacity: 0 },
+                  animate: {
+                    x: 0,
+                    opacity: 1,
+                    transition: { type: "spring", stiffness: 300, damping: 30 },
+                  },
+                  exit: { x: -300, opacity: 0, transition: { duration: 0.2 } },
+                }}
+              />
+            </div>
+          </div>
+        )}
       </AnimatePresence>
-      <div className="flex-1 min-h-screen md:ml-6 flex flex-col wrap">
-        <div className="px-2 sm:px-4 md:px-8 py-4 flex-1 flex flex-col">
+
+      {/* Main Content Area - Proper Spacing */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        <div className="px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col overflow-auto">
           {/* Floating Tools Button for mobile/tablet */}
           <div className="md:hidden fixed left-4 top-20 z-40">
             <button
@@ -45,7 +70,7 @@ const DashboardLayout = () => {
               <Wrench className="w-7 h-7" />
             </button>
           </div>
-          <div className="glass-effect rounded-2xl w-full max-w-full p-4 sm:p-6 md:p-8 bg-white/10 backdrop-blur-md border border-white/10 mx-auto">
+          <div className="w-full h-full">
             <Outlet />
           </div>
         </div>
