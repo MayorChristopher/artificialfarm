@@ -190,14 +190,14 @@ const HomePage = () => {
               className="relative max-w-2xl mx-auto"
             >
               <div className="relative rounded-2xl overflow-hidden glass-effect p-4">
-                <video
+                <iframe
                   className="w-full h-64 md:h-80 object-cover rounded-xl"
-                  controls
-                  poster="https://images.unsplash.com/photo-1554048807-b043cffa8118"
-                >
-                  <source src="/videos/intro.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                  title="Farm Technology Overview"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               </div>
               <p className="text-sm text-white/60 mt-2">Watch: Farm Technology Overview</p>
             </motion.div>
