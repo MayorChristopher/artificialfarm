@@ -1,1 +1,25 @@
 node_modules
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+*.flv
+*.webm
+
+# Build output
+dist/
+
+# Large images (if not needed in repo)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+
+# Keep specific images that are needed
+!public/images/about-image.jpg
