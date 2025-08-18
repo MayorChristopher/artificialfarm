@@ -115,7 +115,7 @@ const AcademyPage = () => {
   return (
     <>
       <Helmet><title>Academy Portal - Artificial Farm Academy</title></Helmet>
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative pt-24 pb-20 overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Academy <span className="text-yellow-400">Portal</span></h1>
@@ -164,8 +164,8 @@ const AcademyPage = () => {
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="glass-effect rounded-3xl p-8 md:p-12 text-center">
               <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Start Your <span className="text-yellow-400">Learning Journey</span></h2>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button onClick={() => window.location.href = '/register'} className="btn-primary text-lg px-8 py-4 rounded-full">Create Free Account</Button>
-                <Button onClick={() => window.location.href = '/login'} className="btn-secondary text-lg px-8 py-4 rounded-full">Sign In</Button>
+                <Button onClick={() => window.location.href = '/register'} className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">Create Free Account</Button>
+                <Button onClick={() => window.location.href = '/login'} className="bg-white/5 hover:bg-white/15 text-white font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40">Sign In</Button>
               </div>
             </motion.div>
           </div>

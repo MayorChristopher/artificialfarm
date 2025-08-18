@@ -83,7 +83,10 @@ const AdminConsultations = () => {
     try {
       const { error } = await supabase
         .from('consultations')
-        .update({ status: newStatus })
+        .update({ 
+          status: newStatus,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', consultationId);
 
       if (error) {

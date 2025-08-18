@@ -36,16 +36,16 @@ const Header = () => {
 
 
   return (
-    <header className="sticky top-0 z-50 glass-effect border-b border-white/10">
+    <header className="fixed top-0 w-full z-50 bg-white/2 backdrop-blur-sm border-b border-white/5">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
-              <span className="text-green-900 font-bold text-lg">AFA</span>
+              <span className="text-green-900 font-bold text-sm">AFAC</span>
             </div>
             <div className="hidden sm:block">
               <span className="text-xl font-bold text-white">Artificial Farm</span>
-              <span className="text-sm text-yellow-400 block">Academy & Consultants</span>
+              <span className="text-sm text-white/70 block">Academy & Consultants</span>
             </div>
           </Link>
 
@@ -90,7 +90,7 @@ const Header = () => {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-48 glass-effect rounded-lg shadow-lg py-2"
+                      className="absolute right-0 mt-2 w-48 bg-white/2 backdrop-blur-sm border border-white/5 rounded-lg shadow-lg py-2"
                     >
                       <Link
                         to="/dashboard"
@@ -133,12 +133,15 @@ const Header = () => {
             ) : (
               <div className="hidden sm:flex items-center space-x-3">
                 <Link to="/login">
-                  <Button variant="ghost" className="text-white hover:text-yellow-400">
+                  <Button 
+                    variant="ghost" 
+                    className="text-white hover:text-yellow-400 hover:bg-white/10 px-6 py-2 rounded-lg font-semibold transition-all duration-300 border border-transparent hover:border-white/20"
+                  >
                     Login
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="btn-primary">
+                  <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
                     Get Started
                   </Button>
                 </Link>
@@ -181,14 +184,17 @@ const Header = () => {
                   </Link>
                 ))}
                 {!isAuthenticated && (
-                  <div className="flex flex-col space-y-2 pt-4 border-t border-white/10">
+                  <div className="flex flex-col space-y-3 pt-4 border-t border-white/10">
                     <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="ghost" className="w-full text-white hover:text-yellow-400">
+                      <Button 
+                        variant="ghost" 
+                        className="w-full text-white hover:text-yellow-400 hover:bg-white/10 py-3 rounded-lg font-semibold transition-all duration-300 border border-transparent hover:border-white/20"
+                      >
                         Login
                       </Button>
                     </Link>
                     <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                      <Button className="w-full btn-primary">
+                      <Button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
                         Get Started
                       </Button>
                     </Link>

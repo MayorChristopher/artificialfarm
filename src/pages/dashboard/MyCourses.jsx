@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   BookOpen,
   Play,
@@ -123,11 +124,13 @@ const MyCourses = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   const handleCourseAction = (action, courseId) => {
     switch (action) {
       case 'resume':
-        toast({ title: 'Resuming Course', description: 'Redirecting to course content...' });
-        // Navigate to course content
+      case 'continue':
+        navigate(`/dashboard/courses/${courseId}/content`);
         break;
       case 'download':
         toast({ title: 'Download Started', description: 'Course materials are being prepared for download.' });
@@ -203,13 +206,13 @@ const MyCourses = () => {
             <div className="flex gap-2">
               <Button
                 onClick={fetchUserCourses}
-                className="btn-secondary"
+                className="bg-white/5 hover:bg-white/15 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40"
                 disabled={loading}
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
                 Refresh
               </Button>
-              <Button className="btn-primary">
+              <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Browse More Courses
               </Button>
@@ -239,9 +242,8 @@ const MyCourses = () => {
               {['all', 'in-progress', 'completed', 'not-started'].map((status) => (
                 <Button
                   key={status}
-                  variant={filterStatus === status ? 'default' : 'outline'}
                   onClick={() => setFilterStatus(status)}
-                  className="btn-secondary"
+                  className={filterStatus === status ? 'bg-yellow-400 text-black font-semibold px-3 py-2 rounded-lg' : 'bg-white/5 hover:bg-white/15 text-white font-semibold px-3 py-2 rounded-lg transition-all duration-300 border border-white/25 hover:border-white/40'}
                 >
                   <Filter className="w-4 h-4 mr-2" />
                   {status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -252,7 +254,7 @@ const MyCourses = () => {
         </motion.div>
 
         {/* Courses Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {filteredCourses.length === 0 ? (
             <motion.div
               initial={{ opacity: 0 }}
@@ -270,7 +272,7 @@ const MyCourses = () => {
                 }
               </p>
               {!searchTerm && filterStatus === 'all' && (
-                <Button className="btn-primary">
+                <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
                   <BookOpen className="w-4 h-4 mr-2" />
                   Browse Available Courses
                 </Button>
@@ -283,11 +285,11 @@ const MyCourses = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-effect rounded-2xl p-6 hover:bg-white/10 transition-all duration-300"
+                className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300"
               >
-                <div className="flex items-start space-x-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-green-400 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="w-8 h-8 text-green-900" />
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-yellow-400 to-green-400 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-green-900" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
@@ -309,7 +311,7 @@ const MyCourses = () => {
                       {enrollment.courses?.description || 'Course description...'}
                     </p>
 
-                    <div className="flex items-center space-x-4 text-xs text-white/60 mb-4">
+                    <div className="flex items-center space-x-2 sm:space-x-4 text-xs text-white/60 mb-4 flex-wrap">
                       <div className="flex items-center">
                         <Clock className="w-3 h-3 mr-1" />
                         {enrollment.courses?.duration || '2h 30m'}
@@ -341,27 +343,24 @@ const MyCourses = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                       <Button
                         onClick={() => handleCourseAction('resume', enrollment.course_id)}
-                        className="btn-primary flex-1"
-                        size="sm"
+                        className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300 flex-1 text-sm"
                       >
                         <Play className="w-4 h-4 mr-2" />
                         {enrollment.progress === 100 ? 'Review' : 'Continue'}
                       </Button>
                       <Button
                         onClick={() => handleCourseAction('download', enrollment.course_id)}
-                        className="btn-secondary"
-                        size="sm"
+                        className="bg-white/5 hover:bg-white/15 text-white font-semibold px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40 text-sm"
                       >
                         <Download className="w-4 h-4" />
                       </Button>
                       {enrollment.progress === 100 && (
                         <Button
                           onClick={() => handleCourseAction('certificate', enrollment.course_id)}
-                          className="btn-secondary"
-                          size="sm"
+                          className="bg-white/5 hover:bg-white/15 text-white font-semibold px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40 text-sm"
                         >
                           <Award className="w-4 h-4" />
                         </Button>

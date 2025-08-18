@@ -57,11 +57,11 @@ const DashboardLayout = () => {
         )}
       </AnimatePresence>
 
-      {/* Main Content Area - Proper Spacing */}
+      {/* Main Content Area - Fixed Navbar Overlap */}
       <div className="flex-1 flex flex-col min-h-screen">
-        <div className="px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col overflow-auto">
+        <div className="px-4 sm:px-6 lg:px-8 pt-24 pb-6 flex-1 flex flex-col overflow-auto">
           {/* Floating Tools Button for mobile/tablet */}
-          <div className="md:hidden fixed left-4 top-20 z-40">
+          <div className="md:hidden fixed left-4 top-24 z-40">
             <button
               className="p-3 rounded-full bg-green-900/90 text-yellow-400 shadow-lg border-2 border-yellow-400 hover:bg-green-800/90 transition-colors"
               onClick={() => setSidebarOpen(true)}

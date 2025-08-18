@@ -13,8 +13,8 @@ const ActiveCourses = ({ courses, onCourseAction }) => {
     >
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-white">Continue Learning</h2>
-        <Link to="/academy">
-          <Button className="btn-secondary text-sm">
+        <Link to="/dashboard/courses">
+          <Button className="bg-white/5 hover:bg-white/15 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40 text-sm">
             View All Courses
           </Button>
         </Link>
@@ -47,7 +47,7 @@ const ActiveCourses = ({ courses, onCourseAction }) => {
                   </div>
                   <Button
                     onClick={() => onCourseAction('continue', course.id)}
-                    className="btn-primary text-sm px-4 py-2"
+                    className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300 text-sm"
                   >
                     Continue
                   </Button>

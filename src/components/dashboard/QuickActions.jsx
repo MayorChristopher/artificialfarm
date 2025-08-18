@@ -17,13 +17,13 @@ const QuickActions = () => {
       
       <div className="space-y-3">
         <Link to="/consulting">
-          <Button className="w-full btn-primary text-sm justify-start">
+          <Button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold text-sm px-4 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300 justify-start">
             <Calendar className="w-4 h-4 mr-2" />
             Book Consultation
           </Button>
         </Link>
         <Link to="/academy">
-          <Button className="w-full btn-secondary text-sm justify-start">
+          <Button className="w-full bg-white/5 hover:bg-white/15 text-white font-semibold text-sm px-4 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40 justify-start">
             <BookOpen className="w-4 h-4 mr-2" />
             Browse Courses
           </Button>
@@ -33,13 +33,13 @@ const QuickActions = () => {
             title: "📜 Certificates",
             description: "🚧 Certificate download isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀"
           })}
-          className="w-full btn-secondary text-sm justify-start"
+          className="w-full bg-white/5 hover:bg-white/15 text-white font-semibold text-sm px-4 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40 justify-start"
         >
           <Download className="w-4 h-4 mr-2" />
           Download Certificates
         </Button>
         <Link to="/contact">
-          <Button className="w-full btn-secondary text-sm justify-start">
+          <Button className="w-full bg-white/5 hover:bg-white/15 text-white font-semibold text-sm px-4 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40 justify-start">
             <MessageSquare className="w-4 h-4 mr-2" />
             Contact Support
           </Button>

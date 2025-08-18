@@ -1,6 +1,6 @@
-# Supabase Setup Guide for Artificial Farm Academy
+# Supabase Setup Guide for Artificial Farm Academy & Consultants (AFAC)
 
-This guide will help you set up your Supabase database to work with the Artificial Farm Academy application.
+This guide will help you set up your Supabase database to work with the Artificial Farm Academy & Consultants (AFAC) application.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This guide will help you set up your Supabase database to work with the Artifici
 3. Click "New Project"
 4. Choose your organization
 5. Enter project details:
-   - Name: `artificial-farm-academy`
+   - Name: `artificial-farm-academy-consultants`
    - Database Password: (choose a strong password)
    - Region: (choose closest to your users)
 6. Click "Create new project"
@@ -47,10 +47,12 @@ This will create:
 - `courses` table for course management
 - `course_enrollments` table for user enrollments
 - `site_stats` table for homepage statistics
+- `success_stories` table for testimonials and success stories
 - `journey_content` table for journey page content
+- `consultations` table for consultation requests
 - `profiles` table for user profiles
 - All necessary Row Level Security (RLS) policies
-- Sample data for testing
+- Sample data for testing including featured success stories
 
 ## Step 5: Configure Authentication
 
@@ -116,6 +118,37 @@ Replace `user-uuid-here` with the actual user ID.
 - `certificates_issued`: Number of certificates issued
 - `yield_improvement`: Average yield improvement percentage
 - `sustainable_projects`: Number of sustainable projects
+- `total_users`: Total registered users
+- `active_courses`: Number of active courses
+- `consultations`: Number of consultations
+- `content_items`: Number of content items
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+
+### Success Stories Table
+- `id`: Unique identifier
+- `name`: Person's name
+- `role`: Their role/profession
+- `location`: Geographic location
+- `content`: Success story content
+- `rating`: Rating (1-5 stars)
+- `avatar_url`: Profile image URL
+- `is_featured`: Whether to show on homepage
+- `is_published`: Whether the story is published
+- `created_at`: Creation timestamp
+- `updated_at`: Last update timestamp
+
+### Consultations Table
+- `id`: Unique identifier
+- `user_id`: Reference to auth.users (optional)
+- `name`: Client name
+- `email`: Client email
+- `phone`: Client phone number
+- `company`: Client company
+- `service_type`: Type of consultation requested
+- `message`: Consultation request message
+- `status`: Request status (pending/in_progress/completed/cancelled)
+- `scheduled_date`: Scheduled consultation date
 - `created_at`: Creation timestamp
 - `updated_at`: Last update timestamp
 
@@ -123,10 +156,12 @@ Replace `user-uuid-here` with the actual user ID.
 
 The application includes Row Level Security (RLS) policies that ensure:
 
-1. **Courses**: Everyone can view, only admins can create/edit/delete
+1. **Courses**: Everyone can view published courses, only admins can create/edit/delete
 2. **Enrollments**: Users can only see their own enrollments, admins can see all
 3. **Site Stats**: Everyone can view, only admins can modify
-4. **Profiles**: Users can only see/edit their own profile, admins can see all
+4. **Success Stories**: Everyone can view published stories, only admins can manage
+5. **Consultations**: Users can view their own requests, admins can view all
+6. **Profiles**: Users can only see/edit their own profile, admins can see all
 
 ## Troubleshooting
 

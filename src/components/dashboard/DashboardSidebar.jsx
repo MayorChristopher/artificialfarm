@@ -20,7 +20,7 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 		<>
 			{/* Desktop sidebar */}
 			<motion.aside
-				className="hidden md:flex flex-col w-64 h-full bg-white/5 border-r border-white/10 py-8 px-4"
+				className="hidden lg:flex flex-col w-64 h-full bg-white/5 border-r border-white/10 py-8 px-4"
 				{...(motionProps && !open ? {} : motionProps || {})}
 			>
 				<div className="flex items-center gap-2 mb-6 text-yellow-400 font-bold text-lg">
@@ -45,12 +45,12 @@ const DashboardSidebar = ({ open = false, onClose, motionProps }) => {
 			{/* Mobile/Tablet overlay drawer (from left) */}
 			{open && (
 				<motion.div
-					className="fixed inset-0 z-50 flex md:hidden"
+					className="fixed inset-0 z-50 flex lg:hidden"
 					initial={{ x: -300, opacity: 0 }}
 					animate={{ x: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 30 } }}
 					exit={{ x: -300, opacity: 0, transition: { duration: 0.2 } }}
 				>
-					<aside className="md:hidden relative w-64 bg-green-900/90 border-r border-yellow-400 min-h-screen py-8 px-4 animate-slide-in-left shadow-2xl">
+					<aside className="lg:hidden relative w-64 sm:w-72 bg-green-900/95 border-r border-yellow-400 min-h-screen py-6 px-4 animate-slide-in-left shadow-2xl backdrop-blur-md">
 						<div className="flex items-center gap-2 mb-6 text-yellow-400 font-bold text-lg">
 							<Wrench className="w-6 h-6" />
 							<span>Tools</span>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
   User,
@@ -12,6 +13,8 @@ import {
 import { Button } from '@/components/ui/button';
 
 const ConsultingPage = () => {
+  const navigate = useNavigate();
+  
   const colorVariants = {
     blue: {
       bg: 'bg-blue-400/20',
@@ -90,7 +93,7 @@ const ConsultingPage = () => {
   ];
 
   const handleStartNow = () => {
-    window.open('https://chat.whatsapp.com/SAMPLELINK', '_blank');
+    navigate('/consultation');
   };
 
   return (
@@ -100,7 +103,7 @@ const ConsultingPage = () => {
         <meta name="description" content="Engage with our three-phase consultation structure designed for beginner, intermediate, and advanced agricultural professionals. No monetization, just hands-on engagement." />
       </Helmet>
 
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative pt-24 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-green-900/30" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -155,7 +158,7 @@ const ConsultingPage = () => {
                       ))}
                     </div>
 
-                    <Button onClick={handleStartNow} className="btn-primary text-lg px-8 py-3 w-full sm:w-auto">
+                    <Button onClick={handleStartNow} className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold text-lg px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300 w-full sm:w-auto">
                       Start Now <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>

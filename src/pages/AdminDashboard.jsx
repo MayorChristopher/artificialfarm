@@ -22,10 +22,11 @@ import AdminUsers from '@/components/admin/AdminUsers';
 import AdminContent from '@/components/admin/AdminContent';
 import AdminPlaceholder from '@/components/admin/AdminPlaceholder';
 import AdminStatsManager from '@/components/admin/AdminStatsManager';
-import AdminCourseManager from '@/components/admin/AdminCourseManager';
+import AdminCourses from '@/components/admin/AdminCourses';
 import AdminConsultations from '@/components/admin/AdminConsultations';
 import AdminMessages from '@/components/admin/AdminMessages';
 import AdminSettings from '@/components/admin/AdminSettings';
+import AdminSuccessStories from '@/components/admin/AdminSuccessStories';
 
 const AdminDashboard = () => {
   const { user, profile, isAuthenticated, isAdmin, authLoading } = useAuth();
@@ -66,13 +67,27 @@ const AdminDashboard = () => {
   };
 
   const fetchStats = async () => {
-    const { data, error } = await supabase.from('site_stats').select('*').order('updated_at', { ascending: false }).limit(1).single();
-    if (!error && data) {
+    try {
+      const [usersData, coursesData, consultationsData, storiesData] = await Promise.all([
+        supabase.from('profiles').select('id', { count: 'exact' }),
+        supabase.from('courses').select('id', { count: 'exact' }).eq('is_published', true),
+        supabase.from('consultations').select('id', { count: 'exact' }),
+        supabase.from('success_stories').select('id', { count: 'exact' })
+      ]);
+      
       setStats([
-        { label: 'Total Users', value: data.total_users?.toLocaleString() || '0', change: '+12%', icon: Users, color: 'text-blue-400', bgColor: 'bg-blue-400/20' },
-        { label: 'Active Courses', value: data.active_courses?.toLocaleString() || '0', change: '+5%', icon: BookOpen, color: 'text-green-400', bgColor: 'bg-green-400/20' },
-        { label: 'Consultations', value: data.consultations?.toLocaleString() || '0', change: '+8%', icon: Calendar, color: 'text-yellow-400', bgColor: 'bg-yellow-400/20' },
-        { label: 'Content Items', value: data.content_items?.toLocaleString() || '0', change: '+15%', icon: BookOpen, color: 'text-purple-400', bgColor: 'bg-purple-400/20' }
+        { label: 'Total Users', value: (usersData.count || 0).toLocaleString(), change: '+12%', icon: Users, color: 'text-blue-400', bgColor: 'bg-blue-400/20' },
+        { label: 'Active Courses', value: (coursesData.count || 0).toLocaleString(), change: '+5%', icon: BookOpen, color: 'text-green-400', bgColor: 'bg-green-400/20' },
+        { label: 'Consultations', value: (consultationsData.count || 0).toLocaleString(), change: '+8%', icon: Calendar, color: 'text-yellow-400', bgColor: 'bg-yellow-400/20' },
+        { label: 'Success Stories', value: (storiesData.count || 0).toLocaleString(), change: '+15%', icon: MessageSquare, color: 'text-purple-400', bgColor: 'bg-purple-400/20' }
+      ]);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      setStats([
+        { label: 'Total Users', value: '0', change: '+0%', icon: Users, color: 'text-blue-400', bgColor: 'bg-blue-400/20' },
+        { label: 'Active Courses', value: '0', change: '+0%', icon: BookOpen, color: 'text-green-400', bgColor: 'bg-green-400/20' },
+        { label: 'Consultations', value: '0', change: '+0%', icon: Calendar, color: 'text-yellow-400', bgColor: 'bg-yellow-400/20' },
+        { label: 'Success Stories', value: '0', change: '+0%', icon: MessageSquare, color: 'text-purple-400', bgColor: 'bg-purple-400/20' }
       ]);
     }
   };
@@ -145,6 +160,7 @@ const AdminDashboard = () => {
     { id: 'courses', name: 'Courses', icon: BookOpen },
     { id: 'users', name: 'Users', icon: Users },
     { id: 'content', name: 'Content', icon: BookOpen },
+    { id: 'stories', name: 'Success Stories', icon: Users },
     { id: 'consultations', name: 'Consultations', icon: Calendar },
     { id: 'messages', name: 'Messages', icon: MessageSquare },
     { id: 'settings', name: 'Settings', icon: Settings }
@@ -176,11 +192,13 @@ const AdminDashboard = () => {
           </div>
         );
       case 'courses':
-        return <AdminCourseManager />;
+        return <AdminCourses />;
       case 'users':
         return <AdminUsers searchTerm={searchTerm} setSearchTerm={setSearchTerm} users={filteredUsers} onUserAction={handleUserAction} currentUser={user} />;
       case 'content':
         return <AdminContent />;
+      case 'stories':
+        return <AdminSuccessStories />;
       case 'consultations':
         return <AdminConsultations />;
       case 'messages':
@@ -196,7 +214,7 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-yellow-400 rounded-lg flex items-center justify-center mx-auto mb-4 animate-pulse"><span className="text-green-900 font-bold text-2xl">AFA</span></div>
+          <div className="w-16 h-16 bg-yellow-400 rounded-lg flex items-center justify-center mx-auto mb-4 animate-pulse"><span className="text-green-900 font-bold text-lg">AFAC</span></div>
           <p className="text-white/70">Loading admin dashboard...</p>
         </div>
       </div>
@@ -209,7 +227,7 @@ const AdminDashboard = () => {
         <title>Admin Dashboard - Artificial Farm Academy & Consultants</title>
         <meta name="description" content="Administrative dashboard for managing users, content, consultations, and system settings." />
       </Helmet>
-      <div className="min-h-screen py-8">
+      <div className="min-h-screen pt-24 pb-8">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8">
             <div className="glass-effect rounded-2xl p-6">
@@ -251,8 +269,10 @@ const AdminDashboard = () => {
           .animate-admin-title-fade { animation: admin-title-fade 1.2s cubic-bezier(.68,-0.55,.27,1.55) both; }
         `}</style>
                 <div className="flex items-center space-x-3">
-                  <Button onClick={handleUpload} className="btn-primary"><Upload className="w-4 h-4 mr-2" />Upload Content</Button>
-                  <Button asChild className="btn-secondary">
+                  <Button onClick={handleUpload} className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
+                    <Upload className="w-4 h-4 mr-2" />Upload Content
+                  </Button>
+                  <Button asChild className="bg-white/5 hover:bg-white/15 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-white/15 border-2 border-white/25 hover:border-white/40">
                     <Link to="/admin-dashboard/settings">
                       <Settings className="w-4 h-4 mr-2" />Settings
                     </Link>

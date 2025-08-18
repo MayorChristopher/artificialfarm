@@ -1,10 +1,10 @@
-/* Custom button styles with consistent color palette */
+/* Professional button styles with enhanced visual appeal */
 .btn-primary {
-  @apply bg-yellow-400 hover:bg-yellow-500 text-green-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-yellow-300 active:scale-95 active:shadow-inner;
+  @apply bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/30 focus:outline-none focus:ring-4 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-yellow-300 active:scale-95 active:shadow-inner backdrop-blur-sm;
 }
 
 .btn-secondary {
-  @apply bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-white/20 hover:border-white/40 active:scale-95 active:shadow-inner;
+  @apply bg-white/5 hover:bg-white/15 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-white/20 focus:outline-none focus:ring-4 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-white/30 hover:border-white/50 active:scale-95 active:shadow-inner backdrop-blur-sm;
 }
 
 .btn-danger {
@@ -19,13 +19,13 @@
   @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-blue-400 active:scale-95 active:shadow-inner;
 }
 
-/* Small button variants */
+/* Small button variants with professional styling */
 .btn-primary-sm {
-  @apply bg-yellow-400 hover:bg-yellow-500 text-green-900 font-medium px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-green-900 text-sm border-2 border-transparent hover:border-yellow-300 active:scale-95 active:shadow-inner;
+  @apply bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-5 py-2.5 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-yellow-400/25 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-green-900 text-sm border-2 border-transparent hover:border-yellow-300 active:scale-95 active:shadow-inner backdrop-blur-sm;
 }
 
 .btn-secondary-sm {
-  @apply bg-transparent hover:bg-white/10 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-green-900 text-sm border-2 border-white/20 hover:border-white/40 active:scale-95 active:shadow-inner;
+  @apply bg-white/5 hover:bg-white/15 text-white font-semibold px-5 py-2.5 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-white/15 focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-green-900 text-sm border-2 border-white/25 hover:border-white/40 active:scale-95 active:shadow-inner backdrop-blur-sm;
 }
 
 .btn-danger-sm {
@@ -40,9 +40,49 @@
   @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-green-900 text-sm border-2 border-transparent hover:border-blue-400 active:scale-95 active:shadow-inner;
 }
 
+/* Professional interactive button variants */
+.btn-cta {
+  @apply bg-gradient-to-r from-green-500 via-green-600 to-green-500 hover:from-green-600 hover:via-green-700 hover:to-green-600 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-green-500/30 focus:outline-none focus:ring-4 focus:ring-green-500/50 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-green-400 active:scale-95 active:shadow-inner backdrop-blur-sm relative overflow-hidden;
+}
+
+/* Professional admin button styles */
+.btn-admin {
+  @apply bg-gradient-to-r from-red-500 via-red-600 to-red-500 hover:from-red-600 hover:via-red-700 hover:to-red-600 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-red-500/30 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-red-400 active:scale-95 active:shadow-inner backdrop-blur-sm;
+}
+
+.btn-instructor {
+  @apply bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 hover:from-blue-600 hover:via-blue-700 hover:to-blue-600 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-blue-400 active:scale-95 active:shadow-inner backdrop-blur-sm;
+}
+
+.btn-moderator {
+  @apply bg-gradient-to-r from-purple-500 via-purple-600 to-purple-500 hover:from-purple-600 hover:via-purple-700 hover:to-purple-600 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-purple-400 active:scale-95 active:shadow-inner backdrop-blur-sm;
+}
+
+.btn-cta::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-700;
+}
+
+.btn-cta:hover::before {
+  @apply translate-x-full;
+}
+
 /* Special interactive button states */
 .btn-outline {
-  @apply bg-transparent border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-green-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-green-900 active:scale-95 active:shadow-inner;
+  @apply bg-transparent border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/30 focus:outline-none focus:ring-4 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-green-900 active:scale-95 active:shadow-inner backdrop-blur-sm relative overflow-hidden;
+}
+
+.btn-outline::before {
+  content: '';
+  @apply absolute inset-0 bg-yellow-400 transform scale-x-0 origin-left transition-transform duration-300;
+}
+
+.btn-outline:hover::before {
+  @apply scale-x-100;
+}
+
+.btn-outline span {
+  @apply relative z-10;
 }
 
 .btn-ghost {
@@ -50,7 +90,16 @@
 }
 
 .btn-gradient {
-  @apply bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-green-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-yellow-300 active:scale-95 active:shadow-inner;
+  @apply bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-500 text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/40 focus:outline-none focus:ring-4 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-green-900 border-2 border-transparent hover:border-yellow-300 active:scale-95 active:shadow-inner backdrop-blur-sm relative overflow-hidden;
+}
+
+.btn-gradient::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-700;
+}
+
+.btn-gradient:hover::before {
+  @apply translate-x-full;
 }
 
 /* Loading state */

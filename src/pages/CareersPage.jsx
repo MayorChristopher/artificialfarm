@@ -18,7 +18,7 @@ const CareersPage = () => {
         <title>Careers - Artificial Farm Academy & Consultants</title>
         <meta name="description" content="Join our team and help shape the future of agriculture in Africa. Explore exciting career opportunities at Artificial Farm Academy & Consultants." />
       </Helmet>
-      <div className="container mx-auto px-4 py-20 text-center">
+      <div className="container mx-auto px-4 pt-24 pb-20 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -40,7 +40,7 @@ const CareersPage = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <Button onClick={handleApply} className="btn-primary text-lg px-8 py-4 rounded-full">
+          <Button onClick={handleApply} className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
             Contact HR
           </Button>
         </motion.div>

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const AboutHero = () => {
     return (
-        <section className="relative py-20 overflow-hidden">
+        <section className="relative pt-24 pb-20 overflow-hidden">
             <div className="absolute inset-0 bg-green-900/30" />
 
             <div className="container mx-auto px-4 relative z-10">
