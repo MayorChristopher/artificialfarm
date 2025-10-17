@@ -13,6 +13,8 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingContact from "@/components/layout/FloatingContact";
+import AIChatbot from "@/components/AIChatbot";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import HomePage from "@/pages/HomePage";
 import AboutPage from "@/pages/AboutPage";
 import AcademyPage from "@/pages/AcademyPage";
@@ -68,6 +70,7 @@ function LayoutWrapper({ children }) {
       <main className="flex-1">{children}</main>
       <Footer />
       <FloatingContact />
+      <AIChatbot />
       <Toaster />
     </>
   );
@@ -75,7 +78,7 @@ function LayoutWrapper({ children }) {
 
 function App() {
   return (
-    <>
+    <ErrorBoundary>
       <HelmetProvider>
         <Router>
           <AuthProvider>
@@ -118,6 +121,7 @@ function App() {
                       path="/dashboard/notifications"
                       element={<Notifications />}
                     />
+                    <Route path="/dashboard/courses" element={<MyCourses />} />
                     <Route
                       path="/dashboard/courses/:courseId/content"
                       element={<CourseContent />}
@@ -142,7 +146,7 @@ function App() {
       </HelmetProvider>
       <Analytics />
       <SpeedInsights />
-    </>
+    </ErrorBoundary>
   );
 }
 

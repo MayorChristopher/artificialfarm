@@ -30,6 +30,7 @@ const DashboardPage = () => {
   const [consultations, setConsultations] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const defaultProgress = { certificates: 0, hoursLearned: 0 };
   const progress = profile?.progress || { certificates: 0, hoursLearned: 0 };
@@ -110,8 +111,13 @@ const DashboardPage = () => {
   }, [enrollments, user]);
 
 
-  const loadDashboardData = async () => {
-    setLoading(true);
+  const loadDashboardData = async (isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    
     try {
       const [enrollmentsData, consultationsData] = await Promise.all([
         fetchEnrollments(),
@@ -121,22 +127,43 @@ const DashboardPage = () => {
       dashboardCache.current.enrollments = enrollmentsData;
       dashboardCache.current.consultations = consultationsData;
       dashboardCache.current.notifications = notificationsData;
-      // Persist to sessionStorage
+      
+      // Persist to sessionStorage with timestamp
       try {
-        sessionStorage.setItem('dashboardCache', JSON.stringify(dashboardCache.current));
-        console.log('[Dashboard] Saved dashboardCache to sessionStorage:', dashboardCache.current);
+        sessionStorage.setItem('dashboardCache', JSON.stringify({
+          ...dashboardCache.current,
+          lastUpdated: Date.now()
+        }));
       } catch (e) {
         console.warn('[Dashboard] Failed to save dashboardCache to sessionStorage:', e);
       }
+      
       setEnrollments(enrollmentsData);
       setConsultations(consultationsData);
       setNotifications(notificationsData);
+      
+      if (isRefresh) {
+        toast({ 
+          title: "Dashboard Refreshed", 
+          description: "All data has been updated with the latest information." 
+        });
+      }
     } catch (error) {
       console.error('[Dashboard] Error loading dashboard data:', error);
-      toast({ title: "Error", description: "Could not load dashboard data.", variant: "destructive" });
+      toast({ 
+        title: "Error", 
+        description: "Could not load dashboard data.", 
+        variant: "destructive" 
+      });
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  // Manual refresh function
+  const handleManualRefresh = () => {
+    loadDashboardData(true);
   };
 
   const fetchEnrollments = async () => {
@@ -252,6 +279,8 @@ const DashboardPage = () => {
               notifications={notifications}
               onProfileUpdate={handleProfileUpdate}
               onNotificationClick={handleNotificationClick}
+              onRefresh={handleManualRefresh}
+              refreshing={refreshing}
             />
           </div>
 

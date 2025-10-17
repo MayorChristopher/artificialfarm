@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Settings, Bell } from "lucide-react";
+import { Settings, Bell, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-const DashboardHeader = ({ user, notifications, onNotificationClick }) => {
+const DashboardHeader = ({ user, notifications, onNotificationClick, onRefresh, refreshing }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -64,7 +64,26 @@ const DashboardHeader = ({ user, notifications, onNotificationClick }) => {
               </div>
             </div>
           </div>
-          {/* All navigation/actions are now in the sidebar for a smarter UX. */}
+          {/* Action buttons */}
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={onRefresh}
+              disabled={refreshing}
+              className="bg-gradient-to-r from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 text-blue-100 border border-blue-400/30 hover:border-blue-300/50 transition-all duration-300"
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh'}
+            </Button>
+            <Button
+              onClick={onNotificationClick}
+              className="relative bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 hover:from-yellow-500/30 hover:to-yellow-600/30 text-yellow-100 border border-yellow-400/30 hover:border-yellow-300/50 transition-all duration-300"
+            >
+              <Bell className="w-4 h-4" />
+              {notifications?.filter(n => !n.read).length > 0 && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+              )}
+            </Button>
+          </div>
         </div>
         {/* <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-gradient-to-r from-green-400/30 to-blue-400/30 rounded-xl p-5 flex items-center gap-4 shadow-lg">

@@ -33,14 +33,55 @@ const Progress = () => {
   const [recentActivity, setRecentActivity] = useState([]);
   const [learningStats, setLearningStats] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchProgressData();
   }, [user]);
 
-  const fetchProgressData = async () => {
+  // Enhanced manual refresh with real-time data sync
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // Clear any cached data
+      localStorage.removeItem('progress_cache');
+      
+      // Fetch fresh data with real-time updates
+      await fetchProgressData(true);
+      
+      toast({ 
+        title: 'Progress Updated', 
+        description: 'Your learning progress has been refreshed with latest data.' 
+      });
+    } catch (error) {
+      toast({ 
+        title: 'Refresh Failed', 
+        description: 'Could not refresh progress data. Please try again.', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const fetchProgressData = async (forceRefresh = false) => {
     setLoading(true);
     try {
+      // Check cache first unless force refresh
+      if (!forceRefresh) {
+        const cached = localStorage.getItem('progress_cache');
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          // Use cache if less than 5 minutes old
+          if (Date.now() - timestamp < 300000) {
+            setProgressData(data.progressData);
+            setRecentActivity(data.recentActivity);
+            setLearningStats(data.learningStats);
+            setLoading(false);
+            return;
+          }
+        }
+      }
       // Fetch user enrollments and progress
       const { data: enrollments, error } = await supabase
         .from('course_enrollments')
@@ -123,11 +164,59 @@ const Progress = () => {
         ]);
 
         // Mock learning stats
-        setLearningStats([
+        const statsData = [
           { label: 'This Week', hours: 12, lessons: 8, score: 87 },
           { label: 'This Month', hours: 45, lessons: 32, score: 92 },
           { label: 'Total', hours: totalHours, lessons: enrollmentsData.length * 5, score: averageScore }
-        ]);
+        ];
+        setLearningStats(statsData);
+        
+        // Cache the data for better performance
+        if (forceRefresh) {
+          localStorage.setItem('progress_cache', JSON.stringify({
+            data: {
+              progressData: {
+                totalCourses: enrollmentsData.length,
+                completedCourses: completed,
+                totalHours: Math.round(totalHours * 10) / 10,
+                averageScore: Math.round(averageScore),
+                streakDays: Math.floor(Math.random() * 30) + 1,
+                certificates: completed
+              },
+              recentActivity: [
+                {
+                  id: 1,
+                  type: 'course_completed',
+                  title: 'Modern Farming Techniques',
+                  description: 'Completed course with 95% score',
+                  time: '2 hours ago',
+                  icon: CheckCircle,
+                  color: 'text-green-400'
+                },
+                {
+                  id: 2,
+                  type: 'lesson_started',
+                  title: 'Soil Management Basics',
+                  description: 'Started lesson 3 of 8',
+                  time: '1 day ago',
+                  icon: Play,
+                  color: 'text-blue-400'
+                },
+                {
+                  id: 3,
+                  type: 'certificate_earned',
+                  title: 'Sustainable Agriculture',
+                  description: 'Earned certificate of completion',
+                  time: '3 days ago',
+                  icon: Award,
+                  color: 'text-yellow-400'
+                }
+              ],
+              learningStats: statsData
+            },
+            timestamp: Date.now()
+          }));
+        }
       }
     } catch (error) {
       toast({ title: 'Error', description: 'Could not load progress data', variant: 'destructive' });
@@ -181,10 +270,20 @@ const Progress = () => {
                 Track your learning journey and celebrate your achievements
               </p>
             </div>
-            <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              View Detailed Analytics
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                onClick={handleRefresh}
+                disabled={refreshing}
+                className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-400/30 border-2 border-transparent hover:border-blue-300"
+              >
+                <Activity className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                {refreshing ? 'Refreshing...' : 'Refresh Progress'}
+              </Button>
+              <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/30 border-2 border-transparent hover:border-yellow-300">
+                <BarChart3 className="w-4 h-4 mr-2" />
+                View Analytics
+              </Button>
+            </div>
           </div>
         </motion.div>
 

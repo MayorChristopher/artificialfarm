@@ -31,6 +31,17 @@ const MyCourses = () => {
 
   useEffect(() => {
     fetchUserCourses();
+    
+    // Listen for dashboard refresh events
+    const handleDashboardRefresh = () => {
+      fetchUserCourses();
+    };
+    
+    window.addEventListener('dashboard:refresh', handleDashboardRefresh);
+    
+    return () => {
+      window.removeEventListener('dashboard:refresh', handleDashboardRefresh);
+    };
   }, [user]);
 
   const fetchUserCourses = async () => {

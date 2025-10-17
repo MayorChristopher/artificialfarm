@@ -6,32 +6,32 @@ import { Button } from '@/components/ui/button';
 const FloatingContact = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const contactOptions = [
+  const contactOptions = React.useMemo(() => [
     {
       icon: MessageCircle,
       label: 'WhatsApp Chat',
       action: () => {
-        window.open('https://wa.me/2341234567890?text=Hello! I\'d like to learn more about Artificial Farm Academy.', '_blank');
+        window.open('https://wa.me/2348035626198?text=Hello! I\'d like to learn more about Artificial Farm Academy.', '_blank');
       },
-      color: 'bg-green-500 hover:bg-green-600'
+      color: 'bg-accent-green hover:bg-green-600'
     },
     {
       icon: Phone,
       label: 'Call Us',
       action: () => {
-        window.location.href = 'tel:+2341234567890';
+        window.location.href = 'tel:+2348035626198';
       },
-      color: 'bg-blue-500 hover:bg-blue-600'
+      color: 'bg-primary-green hover:bg-green-800'
     },
     {
       icon: Mail,
       label: 'Email Us',
       action: () => {
-        window.location.href = 'mailto:info@artificialfarms.com';
+        window.location.href = 'mailto:Artificialfarm24@gmail.com';
       },
-      color: 'bg-purple-500 hover:bg-purple-600'
+      color: 'bg-secondary-yellow hover:bg-yellow-500 text-primary-green'
     }
-  ];
+  ], []);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -66,9 +66,9 @@ const FloatingContact = () => {
 
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="w-14 h-14 bg-yellow-400 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center pulse-glow"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="w-14 h-14 bg-secondary-yellow hover:bg-yellow-500 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -79,7 +79,7 @@ const FloatingContact = () => {
               exit={{ rotate: 90, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <X className="w-6 h-6 text-green-900" />
+              <X className="w-6 h-6 text-primary-green" />
             </motion.div>
           ) : (
             <motion.div
@@ -89,7 +89,7 @@ const FloatingContact = () => {
               exit={{ rotate: -90, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <MessageCircle className="w-6 h-6 text-green-900" />
+              <MessageCircle className="w-6 h-6 text-primary-green" />
             </motion.div>
           )}
         </AnimatePresence>

@@ -17,7 +17,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import CourseVideoPlayer from "@/components/dashboard/CourseVideoPlayer";
+import UniversalVideoPlayer from "@/components/dashboard/UniversalVideoPlayer";
 
 const CourseContent = () => {
   const { courseId } = useParams();
@@ -32,6 +32,17 @@ const CourseContent = () => {
 
   useEffect(() => {
     fetchCourseData();
+    
+    // Listen for dashboard refresh events
+    const handleDashboardRefresh = () => {
+      fetchCourseData();
+    };
+    
+    window.addEventListener('dashboard:refresh', handleDashboardRefresh);
+    
+    return () => {
+      window.removeEventListener('dashboard:refresh', handleDashboardRefresh);
+    };
   }, [courseId, user]);
 
   const fetchCourseData = async () => {
@@ -112,8 +123,14 @@ const CourseContent = () => {
     try {
       await supabase
         .from("course_enrollments")
-        .update({ progress: overallProgress })
+        .update({ 
+          progress: overallProgress,
+          last_accessed: new Date().toISOString()
+        })
         .eq("id", enrollment.id);
+        
+      // Trigger dashboard refresh for real-time updates
+      window.dispatchEvent(new CustomEvent('dashboard:refresh'));
     } catch (error) {
       console.error("Error updating course progress:", error);
     }
@@ -186,7 +203,7 @@ const CourseContent = () => {
         >
           <div className="flex items-center justify-between mb-4">
             <Button
-              onClick={() => navigate("/dashboard/courses")}
+              onClick={() => navigate("/dashboard/my-courses")}
               className="bg-white/5 hover:bg-white/15 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 border border-white/25 hover:border-white/40"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -251,7 +268,7 @@ const CourseContent = () => {
 
               {/* Video Player */}
               {currentLessonData?.type === "video" && (
-                <CourseVideoPlayer
+                <UniversalVideoPlayer
                   courseId={courseId}
                   lessonId={currentLessonData.id}
                   videoUrl={currentLessonData.video_url}

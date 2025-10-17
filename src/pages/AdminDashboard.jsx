@@ -27,6 +27,7 @@ import AdminConsultations from '@/components/admin/AdminConsultations';
 import AdminMessages from '@/components/admin/AdminMessages';
 import AdminSettings from '@/components/admin/AdminSettings';
 import AdminSuccessStories from '@/components/admin/AdminSuccessStories';
+import DataInitializer from '@/components/admin/DataInitializer';
 
 const AdminDashboard = () => {
   const { user, profile, isAuthenticated, isAdmin, authLoading } = useAuth();
@@ -188,7 +189,10 @@ const AdminDashboard = () => {
               onAnalytics={handleAnalytics}
               onUpload={handleUpload}
             />
-            <AdminStatsManager />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <AdminStatsManager />
+              <DataInitializer />
+            </div>
           </div>
         );
       case 'courses':

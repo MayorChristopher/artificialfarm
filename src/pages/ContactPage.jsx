@@ -12,17 +12,17 @@ const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const contactInfo = [
-    { icon: Phone, title: 'Phone', details: ['+234 (0) 123 456 7890'], color: 'text-blue-400' },
-    { icon: Mail, title: 'Email', details: ['info@artificialfarms.com'], color: 'text-green-400' },
-    { icon: MapPin, title: 'Address', details: ['Lagos, Nigeria'], color: 'text-yellow-400' },
-    { icon: Clock, title: 'Working Hours', details: ['Mon - Fri: 8:00 AM - 6:00 PM'], color: 'text-purple-400' }
+    { icon: Phone, title: 'Phone', details: ['+234 803 562 6198', '+234 806 916 7362'], color: 'text-blue-400' },
+    { icon: Mail, title: 'Email', details: ['Artificialfarm24@gmail.com'], color: 'text-green-400' },
+    { icon: MapPin, title: 'Address', details: ['Chukwu Avenue, close to industrial timber market', 'Umuahia, Abia State, Nigeria'], color: 'text-yellow-400' },
+    { icon: Clock, title: 'Working Hours', details: ['Mon - Fri: 8:00 AM - 6:00 PM', 'Sat: 9:00 AM - 4:00 PM'], color: 'text-purple-400' }
   ];
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook', color: 'hover:text-blue-400' },
-    { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-blue-300' },
-    { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:text-pink-400' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:text-blue-500' },
-    { icon: Youtube, href: '#', label: 'YouTube', color: 'hover:text-red-400' }
+    { icon: Facebook, href: 'https://facebook.com/artificialfarm24', label: 'Facebook', color: 'hover:text-blue-400' },
+    { icon: Twitter, href: 'https://twitter.com/artificialfarm24', label: 'Twitter', color: 'hover:text-blue-300' },
+    { icon: Instagram, href: 'https://share.google/NAgpoqiDEbGpbd4gi', label: 'Instagram', color: 'hover:text-pink-400' },
+    { icon: Linkedin, href: 'https://linkedin.com/company/artificialfarm24', label: 'LinkedIn', color: 'hover:text-blue-500' },
+    { icon: Youtube, href: 'https://youtube.com/@artificialfarm24', label: 'YouTube', color: 'hover:text-red-400' }
   ];
   const departments = [
     { value: 'general', label: 'General Inquiry' },
@@ -52,7 +52,7 @@ const ContactPage = () => {
     setIsSubmitting(false);
   };
   const handleSocialClick = (url) => window.open(url, '_blank');
-  const handleMapClick = () => window.open('https://maps.google.com/?q=Lagos,Nigeria', '_blank');
+  const handleMapClick = () => window.open('https://maps.google.com/?q=Chukwu+Avenue+Umuahia+Abia+State+Nigeria', '_blank');
 
   return (
     <>

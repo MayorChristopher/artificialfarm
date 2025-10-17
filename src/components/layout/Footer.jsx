@@ -11,6 +11,7 @@ import {
   Instagram,
   Linkedin,
   Youtube,
+  Music,
   Leaf,
   Cog,
   BookOpen,
@@ -44,27 +45,27 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: Facebook,
-      href: "https://facebook.com/artificialfarm",
+      href: "https://www.facebook.com/profile.php?id=61568137052992",
       label: "Facebook",
     },
     {
       icon: Twitter,
-      href: "https://twitter.com/artificialfarm",
+      href: "https://x.com/farmerotuto2?t=WPGNUVQQ3Ri1UBL02QnjDw&s=09",
       label: "Twitter",
     },
     {
       icon: Instagram,
-      href: "https://instagram.com/artificialfarm",
+      href: "https://www.instagram.com/artificial_farm_academy?igsh=c3oxOGQxNTY1OGI=",
       label: "Instagram",
     },
     {
-      icon: Linkedin,
-      href: "https://linkedin.com/company/artificialfarm",
-      label: "LinkedIn",
+      icon: Music,
+      href: "https://vm.tiktok.com/ZSHnNq5wj1VUU-ai1Od/",
+      label: "TikTok",
     },
     {
       icon: Youtube,
-      href: "https://youtube.com/@artificialfarmacademy",
+      href: "https://youtube.com/@artificialfarmsacademy?si=qXGW2GBV_v_UxAcY",
       label: "YouTube",
     },
   ];
@@ -81,7 +82,7 @@ const Footer = () => {
   };
 
   const handleMapClick = () => {
-    window.open("https://maps.google.com/?q=Lagos,Nigeria", "_blank");
+    window.open("https://maps.google.com/?q=Chukwu+Avenue+Umuahia+Abia+State+Nigeria", "_blank");
   };
 
   return (
@@ -171,29 +172,31 @@ const Footer = () => {
                   onClick={handleMapClick}
                   className="text-white/70 text-sm hover:text-yellow-400 transition-colors text-left"
                 >
-                  Lagos, Nigeria
+                  Chukwu Avenue, close to industrial timber market
                   <br />
-                  West Africa
+                  Umuahia, Abia State, Nigeria
                 </button>
               </div>
 
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                <a
-                  href="tel:+2341234567890"
-                  className="text-white/70 text-sm hover:text-yellow-400 transition-colors"
-                >
-                  +234 (0) 123 456 7890
-                </a>
+                <div className="text-white/70 text-sm">
+                  <a href="tel:+2348035626198" className="hover:text-yellow-400 transition-colors block">
+                    +234 803 562 6198
+                  </a>
+                  <a href="tel:+2348069167362" className="hover:text-yellow-400 transition-colors block">
+                    +234 806 916 7362
+                  </a>
+                </div>
               </div>
 
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-yellow-400 flex-shrink-0" />
                 <a
-                  href="mailto:info@artificialfarms.com"
+                  href="mailto:Artificialfarm24@gmail.com"
                   className="text-white/70 text-sm hover:text-yellow-400 transition-colors"
                 >
-                  info@artificialfarms.com
+                  Artificialfarm24@gmail.com
                 </a>
               </div>
 
