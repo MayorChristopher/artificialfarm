@@ -35,7 +35,18 @@ export const chatbotService = {
 
   // Get user-specific data
   async getUserData(user) {
-    if (!user?.id) return null;
+    if (!user?.id) {
+      return {
+        name: 'Guest',
+        email: null,
+        enrollments: [],
+        totalProgress: 0,
+        completedLessons: 0,
+        totalLessons: 0,
+        isActive: false,
+        isGuest: true
+      };
+    }
 
     try {
       const [enrollmentsRes, progressRes] = await Promise.all([
@@ -68,7 +79,8 @@ export const chatbotService = {
         totalProgress,
         completedLessons,
         totalLessons,
-        isActive: enrollments.length > 0
+        isActive: enrollments.length > 0,
+        isGuest: false
       };
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -79,7 +91,8 @@ export const chatbotService = {
         totalProgress: 0,
         completedLessons: 0,
         totalLessons: 0,
-        isActive: false
+        isActive: false,
+        isGuest: false
       };
     }
   },
@@ -197,6 +210,11 @@ export const chatbotService = {
   // Response generation methods
   getGreetingResponse(userData, siteData) {
     const name = userData?.name || 'there';
+    
+    if (userData?.isGuest) {
+      return `Hello! Welcome to Artificial Farm Academy. I'm AFAC Assistant, your intelligent farming companion. I can provide general farming guidance and information about our ${siteData.courses.length} courses. For personalized recommendations and to enroll in courses, please sign in or create an account. How can I help you today?`;
+    }
+    
     const responses = [
       `Hello ${name}! Welcome to Artificial Farm Academy. I'm AFAC Assistant, your intelligent farming companion. I have access to ${siteData.courses.length} courses and can provide personalized guidance based on your farming goals.`,
       `Hi ${name}! I'm here to help you with smart farming solutions, course recommendations, and expert advice. What farming challenge can I help you solve today?`,
@@ -207,6 +225,10 @@ export const chatbotService = {
 
   getCourseResponse(message, siteData, userData) {
     const courses = siteData.courses;
+    
+    if (userData?.isGuest) {
+      return `We offer ${courses.length} comprehensive courses including "${courses[0]?.title}", "${courses[1]?.title}", and more. To enroll in courses and access personalized recommendations, please sign in to your account or create a new one. Would you like me to tell you more about our course categories?`;
+    }
     
     if (message.includes('beginner') || message.includes('start')) {
       const beginnerCourses = courses.filter(c => c.difficulty_level === 'Beginner');
@@ -231,6 +253,10 @@ export const chatbotService = {
   },
 
   getProgressResponse(userData) {
+    if (userData?.isGuest) {
+      return "To track your progress and access personalized features, please sign in to your account or create a new one. Once logged in, you can enroll in courses and track your learning journey!";
+    }
+    
     if (!userData || !userData.isActive) {
       return "To track your progress, you'll need to enroll in our courses first. I can recommend some excellent starting courses based on your farming interests and experience level. What type of farming are you most interested in?";
     }
