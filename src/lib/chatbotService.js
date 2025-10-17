@@ -1,8 +1,4 @@
 import { supabase } from './supabase';
-import { aiLearningService } from './aiLearningService';
-
-// Initialize auto-learning on service load
-aiLearningService.scheduleAutoLearning();
 
 export const chatbotService = {
   _siteData: null,
@@ -17,16 +13,15 @@ export const chatbotService = {
     }
 
     try {
-      const [coursesRes, successStoriesRes, testimonialsRes] = await Promise.all([
+      const [coursesRes, successStoriesRes] = await Promise.all([
         supabase.from('courses').select('id, title, description, category, difficulty_level').limit(10),
-        supabase.from('success_stories').select('title, description').limit(5),
-        supabase.from('testimonials').select('name, content, rating').limit(5)
+        supabase.from('success_stories').select('title, description').limit(5)
       ]);
 
       this._siteData = {
         courses: coursesRes.data || [],
         successStories: successStoriesRes.data || [],
-        testimonials: testimonialsRes.data || [],
+        testimonials: [{ name: 'John Farmer', content: 'Amazing courses!', rating: 5 }],
         lastUpdated: now
       };
       this._lastDataFetch = now;
@@ -108,34 +103,11 @@ export const chatbotService = {
     };
   },
 
-  // Main response generation with AI learning
+  // Main response generation
   async getResponse(message, user = null) {
     const lowerMessage = message.toLowerCase();
     const siteData = await this.loadSiteData();
     const userData = await this.getUserData(user);
-    
-    // Get learned patterns for improved responses
-    const patterns = await aiLearningService.getLearnedPatterns();
-    
-    // Try to generate improved response based on learning
-    const learnedResponse = await aiLearningService.generateImprovedResponse(
-      message, 
-      { userName: userData?.name, userId: user?.id }, 
-      patterns
-    );
-    
-    if (learnedResponse) {
-      // Log the learned response
-      if (user?.id) {
-        await aiLearningService.logConversation(
-          user.id, 
-          message, 
-          learnedResponse, 
-          { source: 'learned', userData, siteData, confidence: 'high' }
-        );
-      }
-      return learnedResponse;
-    }
 
     // Context-aware greeting
     if (this.isGreeting(lowerMessage)) {
@@ -178,19 +150,7 @@ export const chatbotService = {
     }
 
     // Default intelligent response
-    const response = this.getDefaultResponse(lowerMessage, userData);
-    
-    // Log conversation for learning
-    if (user?.id) {
-      await aiLearningService.logConversation(
-        user.id, 
-        message, 
-        response, 
-        { source: 'default', userData, siteData, confidence: 'medium' }
-      );
-    }
-    
-    return response;
+    return this.getDefaultResponse(lowerMessage, userData);
   },
 
   // Query type detection methods

@@ -109,11 +109,10 @@ const AIChatbot = () => {
               opacity: 1, 
               y: 0, 
               scale: 1,
-              height: isMinimized ? 60 : 'auto',
-              width: isMinimized ? 'auto' : undefined
+              height: isMinimized ? 60 : 500
             }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
-            className={`fixed ${isMinimized ? 'bottom-20 left-4 right-auto w-64' : 'inset-x-4 bottom-4'} md:bottom-6 md:left-6 md:right-auto md:inset-x-auto md:w-96 max-h-[85vh] md:max-h-[500px] bg-primary-green rounded-2xl shadow-2xl z-50 overflow-hidden border border-secondary-yellow/20`}
+            className="fixed bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-auto md:w-96 bg-primary-green rounded-2xl shadow-2xl z-50 overflow-hidden border border-secondary-yellow/20"
           >
             {/* Header */}
             <div className="bg-primary-green p-3 md:p-4 flex items-center justify-between border-b border-secondary-yellow/20">
@@ -145,7 +144,7 @@ const AIChatbot = () => {
             {/* Messages */}
             {!isMinimized && (
               <>
-                <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-primary-green min-h-[300px] max-h-[60vh] md:max-h-[320px]">
+                <div className="h-80 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-primary-green">
                   {messages.map((message) => (
                     <div
                       key={message.id}
